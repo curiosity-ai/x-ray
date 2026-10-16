@@ -27,6 +27,7 @@ dotnet add package X-Ray
 | [`X-Ray.Psd.Text`](https://www.nuget.org/packages/X-Ray.Psd.Text/) | Re-renders PSD type layers from their text with SkiaSharp and HarfBuzz. |
 | [`X-Ray.Email`](https://www.nuget.org/packages/X-Ray.Email/) | Outlook MSG, EML and Compound File Binary containers: read, create, convert. |
 | [`X-Ray.PS`](https://www.nuget.org/packages/X-Ray.PS/) | PostScript, EPS and XPS: reading, and conversion to PDF and images. |
+| [`X-Ray.PS.Skia`](https://www.nuget.org/packages/X-Ray.PS.Skia/) | Optional SkiaSharp raster writer for X-Ray.PS. | MIT |
 | [`X-Ray.OneNote`](https://www.nuget.org/packages/X-Ray.OneNote/) | OneNote `.one` files: pages, text, images, tables, and export to PDF. |
 
 A member that has not been published yet is not a dependency of this package; it is added by

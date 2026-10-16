@@ -30,6 +30,7 @@ The packages themselves live in the repositories below.
 | [`X-Ray.Psd.Text`](https://www.nuget.org/packages/X-Ray.Psd.Text/) | Re-renders PSD type layers from their text (SkiaSharp, HarfBuzz). | [x-ray-others](https://github.com/curiosity-ai/x-ray-others) | MIT |
 | [`X-Ray.Email`](https://www.nuget.org/packages/X-Ray.Email/) | Outlook MSG, EML and Compound File Binary: read, create, convert. | [x-ray-others](https://github.com/curiosity-ai/x-ray-others) | MIT |
 | [`X-Ray.PS`](https://www.nuget.org/packages/X-Ray.PS/) | PostScript, EPS and XPS: reading and conversion to PDF and images. | [x-ray-others](https://github.com/curiosity-ai/x-ray-others) | MIT |
+| [`X-Ray.PS.Skia`](https://www.nuget.org/packages/X-Ray.PS.Skia/) | Optional SkiaSharp raster writer for X-Ray.PS (anti-aliased output, XPS opacity masks). | [x-ray-others](https://github.com/curiosity-ai/x-ray-others) | MIT |
 | [`X-Ray.OneNote`](https://www.nuget.org/packages/X-Ray.OneNote/) | OneNote `.one`: pages, text, images, tables, export to PDF. | [x-ray-others](https://github.com/curiosity-ai/x-ray-others) | MIT |
 
 Package ids are hyphenated; assemblies and namespaces are not (`X-Ray.Content` is the

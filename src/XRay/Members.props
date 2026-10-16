@@ -30,6 +30,7 @@
     <XRayMember Include="X-Ray.Psd.Text" Version="$(XRayPsdTextVersion)" />
     <XRayMember Include="X-Ray.Email"    Version="$(XRayEmailVersion)" />
     <XRayMember Include="X-Ray.PS"       Version="$(XRayPSVersion)" />
+    <XRayMember Include="X-Ray.PS.Skia"  Version="$(XRayPSSkiaVersion)" />
     <XRayMember Include="X-Ray.OneNote"  Version="$(XRayOneNoteVersion)" />
   </ItemGroup>
 
