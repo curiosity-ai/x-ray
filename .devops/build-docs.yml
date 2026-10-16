@@ -1,5 +1,5 @@
 # Builds the X-Ray documentation site (docs/, a Neko project) and publishes it to the gh-pages
-# branch of curiosity-ai/x-ray, which GitHub Pages serves at https://x-ray.curiosity.ai/ (the
+# branch of curiosity-ai/x-ray, which GitHub Pages serves at https://xray.curiosity.ai/ (the
 # hostname comes from the CNAME file Neko writes from docs/neko.yml's `url`).
 # The same steps as curiosity-ai/documentation's .devops/build-website.yml: install or update the
 # Neko .NET tool, build, then force-push the output as a fresh single-commit gh-pages branch.

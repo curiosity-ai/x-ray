@@ -128,10 +128,10 @@ Built with **Neko** (a .NET global tool, `dotnet tool update --global Neko`; the
 `Neko`, add `~/.dotnet/tools` to `PATH`). Modelled on `curiosity-ai/documentation`, whose
 `.claude/` holds the full Neko component reference (alerts, tabs, cards, hero, ...).
 
-- `docs/neko.yml`: branding, header links, `url: x-ray.curiosity.ai`. Neko emits root-relative
+- `docs/neko.yml`: branding, header links, `url: xray.curiosity.ai`. Neko emits root-relative
   links and has no base-path option, so the site needs its own hostname rather than
   `curiosity-ai.github.io/x-ray/`; Neko writes `url`'s host to `CNAME`. The DNS record
-  (`x-ray.curiosity.ai` CNAME `curiosity-ai.github.io`) and GitHub Pages on `gh-pages` are set
+  (`xray.curiosity.ai` CNAME `curiosity-ai.github.io`) and GitHub Pages on `gh-pages` are set
   up outside the repository.
 - Sections: `getting-started/`, one folder per package (`content/`, `office/`, `psd/`, `email/`,
   `ps/`, `onenote/`), `contributing/`. Each folder has `index.yml` (label, icon, order) and

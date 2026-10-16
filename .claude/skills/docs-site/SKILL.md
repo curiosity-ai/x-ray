@@ -1,6 +1,6 @@
 ---
 name: docs-site
-description: Add or update a page of the X-Ray documentation site (docs/ in curiosity-ai/x-ray), built with Neko and published to x-ray.curiosity.ai through gh-pages. Use when documenting a package, adding a section for a new family member, fixing a docs page, changing the site's navigation or branding, or when the docs build or link check fails.
+description: Add or update a page of the X-Ray documentation site (docs/ in curiosity-ai/x-ray), built with Neko and published to xray.curiosity.ai through gh-pages. Use when documenting a package, adding a section for a new family member, fixing a docs page, changing the site's navigation or branding, or when the docs build or link check fails.
 ---
 
 # The X-Ray docs site
@@ -56,7 +56,7 @@ Folders: `index.yml` with `label`, `icon`, `order` (and `expanded: true` to open
 
 - **Links**: root-relative and extensionless: `/content/`, `/getting-started/installation`.
   Assets: `/assets/logo.png`. Never `assets/...` without the slash (it resolves per page and
-  breaks), never the full `https://x-ray.curiosity.ai` for internal links.
+  breaks), never the full `https://xray.curiosity.ai` for internal links.
 - **Icons** must exist in UIcons, or they render blank. Check a name against the built CSS:
   `grep -c "fi-rr-<name>:before" .build/assets/uicons-regular-rounded.css`.
 - **Components** used here: `[!hero ...]`, `:::: card-grid` / `::: card {...}`,
@@ -85,7 +85,7 @@ Folders: `index.yml` with `label`, `icon`, `order` (and `expanded: true` to open
 adds `.nojekyll`, and force-pushes it to `gh-pages` of curiosity-ai/x-ray with the `$(username)`,
 `$(pat)` and `$(email)` pipeline variables.
 
-The site is served at `x-ray.curiosity.ai`, not `curiosity-ai.github.io/x-ray/`: Neko writes
+The site is served at `xray.curiosity.ai`, not `curiosity-ai.github.io/x-ray/`: Neko writes
 root-relative URLs and has no base-path setting, so it needs a hostname of its own. Neko writes
 the `CNAME` file from `url:` in `neko.yml`. If you change the hostname, change `url:`, the DNS
 record, and the links in `README.md`, `src/XRay/README.md` and `Directory.Build.props`.

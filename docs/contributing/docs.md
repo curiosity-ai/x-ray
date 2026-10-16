@@ -70,4 +70,4 @@ page). Pages carry front matter with `label`, `icon` and `order`. Icons are
 
 `.devops/build-docs.yml` runs on every push to `main` that touches `docs/`. It installs Neko,
 builds the site, and force-pushes the output to the `gh-pages` branch, which GitHub Pages
-serves at `x-ray.curiosity.ai`.
+serves at `xray.curiosity.ai`.

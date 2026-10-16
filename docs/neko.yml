@@ -7,8 +7,8 @@ output: .neko
 # /x-ray/ path of curiosity-ai.github.io: it needs a host of its own, the same way
 # docs.curiosity.ai is served. Neko writes `url`'s host into the CNAME file of the output,
 # which is what tells GitHub Pages which domain to answer for. The DNS side is a CNAME
-# record for x-ray.curiosity.ai pointing at curiosity-ai.github.io.
-url: x-ray.curiosity.ai
+# record for xray.curiosity.ai pointing at curiosity-ai.github.io.
+url: xray.curiosity.ai
 
 branding:
   title: "X-Ray"

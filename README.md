@@ -3,7 +3,7 @@
 # X-Ray
 
 [![X-Ray](https://img.shields.io/nuget/v/X-Ray?label=X-Ray&color=5c2d91&logo=nuget&logoColor=white)](https://www.nuget.org/packages/X-Ray/)
-[![Docs](https://img.shields.io/badge/docs-x--ray.curiosity.ai-007ec6)](https://x-ray.curiosity.ai/)
+[![Docs](https://img.shields.io/badge/docs-xray.curiosity.ai-007ec6)](https://xray.curiosity.ai/)
 
 X-Ray is a family of pure C# NuGet packages for .NET 10, from Curiosity GmbH, for working with
 documents: extracting their content for search and LLMs, rendering them to PDF and images, and
@@ -16,7 +16,7 @@ This repository is the family's root. It holds the `X-Ray` umbrella package, the
 documentation site, and the notes and skills shared by everyone working across the family.
 The packages themselves live in the repositories below.
 
-**Documentation: <https://x-ray.curiosity.ai/>**
+**Documentation: <https://xray.curiosity.ai/>**
 
 ## Packages
 
@@ -52,7 +52,7 @@ dotnet add package X-Ray.Psd
 ```
 
 Nothing is lost by referencing a member directly, and it keeps your dependency graph to what
-you use. See [Installation](https://x-ray.curiosity.ai/getting-started/installation) for the
+you use. See [Installation](https://xray.curiosity.ai/getting-started/installation) for the
 requirements and which packages bring native code.
 
 ## How the repositories fit together
@@ -78,7 +78,7 @@ curiosity-ai/test_documents    the shared fixture corpus, a git submodule of the
 
 ```
 src/XRay/            the X-Ray umbrella package; Members.props is the list of members
-docs/                the documentation site (Neko), published to x-ray.curiosity.ai
+docs/                the documentation site (Neko), published to xray.curiosity.ai
 assets/logo.png      the family icon, packed into every X-Ray package
 .devops/             the umbrella's NuGet pipeline and the docs pipeline
 .claude/skills/      skills for working across the family
