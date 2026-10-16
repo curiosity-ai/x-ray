@@ -1,0 +1,25 @@
+# .NET build output
+**/bin/
+**/obj/
+*.nupkg
+*.snupkg
+/artifacts/
+/local-feed/
+
+# Docs site output (neko build -o .build) and Neko's own caches
+/.build/
+.neko/
+.neko-cache/
+
+# IDE / editor
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+*.DotSettings.user
+
+# OS noise
+.DS_Store
+Thumbs.db
+*~

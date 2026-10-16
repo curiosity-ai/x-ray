@@ -1,0 +1,118 @@
+# Publishes X-Ray, the family's umbrella metapackage, to nuget.org. Same shape as the members'
+# pipelines (curiosity-ai/x-ray-content's .devops/build-x-ray-nuget.yml): CalVer versioning off
+# the build id, pack, then push through the shared `nuget-curiosity-org` service connection.
+#
+# The members live in their own repositories and are published by their own pipelines, so this
+# one cannot pack them alongside. Instead it asks nuget.org for the newest version of each member
+# (.devops/resolve-member-versions.ps1, reading the list in src/XRay/Members.props) and passes
+# those as MSBuild properties, so every X-Ray release pins the newest members published at the
+# time it runs. Queue this pipeline after a member ships to carry its new version into X-Ray.
+#
+# A member that is not on nuget.org yet is skipped with a warning and left out of the package,
+# so the umbrella can ship while the family is still arriving. Tick `strictMembers` when queueing
+# a run to fail instead. To hold one member back, set a pipeline variable named after
+# its property (for example XRayOfficeVersion=26.9.1234) and the resolver keeps that value.
+variables:
+  umbrella: './src/XRay/XRay.csproj'
+  buildConfiguration: 'Release'
+  targetVersion: yy.M.$(build.buildId)
+  # Filled in by the 'Resolve member versions' step.
+  memberArgs: ''
+  memberProps: ''
+
+# A runtime parameter rather than a variable: it is offered in the 'Run pipeline' dialog, and the
+# template expression below can read it (a queue-time variable is not visible at that stage).
+parameters:
+- name: strictMembers
+  displayName: 'Fail if any member is not published yet'
+  type: boolean
+  default: false
+
+trigger:
+  branches:
+    include:
+    - main
+  paths:
+    include:
+    - src/*
+    - assets/*
+    - Directory.Build.props
+    - global.json
+    - .devops/build-x-ray-nuget.yml
+    - .devops/resolve-member-versions.ps1
+
+pr: none
+
+pool:
+  vmImage: 'windows-latest'
+
+steps:
+- task: NuGetToolInstaller@0
+
+
+- task: PowerShell@2
+  displayName: 'Create CalVer Version'
+  inputs:
+    targetType: 'inline'
+    script: |
+      $dottedDate = (Get-Date).ToString("yy.M")
+      $buildID = $($env:BUILD_BUILDID)
+      $modBuildID = [int]$buildID % 65536  # ensure fits in int16
+      $newTargetVersion = "$dottedDate.$modBuildID"
+      Write-Host "##vso[task.setvariable variable=targetVersion;]$newTargetVersion"
+      Write-Host "Updated targetVersion to '$newTargetVersion'"
+
+
+- task: PowerShell@2
+  displayName: 'Resolve member versions'
+  inputs:
+    targetType: 'filePath'
+    filePath: '$(Build.SourcesDirectory)/.devops/resolve-member-versions.ps1'
+    ${{ if parameters.strictMembers }}:
+      arguments: '-Strict'
+    pwsh: true
+
+
+- task: UseDotNet@2
+  displayName: 'Use .NET 10.0 SDK'
+  inputs:
+    packageType: sdk
+    version: 10.x
+    includePreviewVersions: false
+    installationPath: $(Agent.ToolsDirectory)\dotnet
+
+# The member versions go to every step. Restore needs them to resolve the right packages, and
+# pack reads its dependency list from the same evaluation, so a step without them would see a
+# package with no members (which the project refuses to pack: error XRAY003).
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'restore'
+    projects: '$(umbrella)'
+    restoreArguments: '$(memberArgs)'
+  displayName: 'restore nuget'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'build'
+    projects: '$(umbrella)'
+    arguments: '-c $(buildConfiguration) --no-restore /p:Version=$(targetVersion) /p:LangVersion=latest $(memberArgs)'
+  displayName: 'build'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'pack'
+    packagesToPack: '$(umbrella)'
+    packDirectory: '$(Build.ArtifactStagingDirectory)'
+    versioningScheme: 'off'
+    configuration: '$(buildConfiguration)'
+    buildProperties: 'Version="$(targetVersion)";LangVersion="latest";$(memberProps)'
+    nobuild: true
+  displayName: 'pack nuget'
+
+- task: NuGetCommand@2
+  inputs:
+    command: 'push'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg'
+    nuGetFeedType: 'external'
+    publishFeedCredentials: 'nuget-curiosity-org'
+  displayName: 'push nuget'

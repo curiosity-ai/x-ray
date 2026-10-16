@@ -1,0 +1,33 @@
+<Project>
+  <!-- Shared by every project in this repository (today only the X-Ray umbrella). The same
+       metadata the member repositories set: Curiosity GmbH as author, the family icon, and this
+       repository as the source. -->
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Deterministic>true</Deterministic>
+
+    <IsPackable>false</IsPackable>
+    <!-- The pipeline overrides this with the CalVer version of the run (yy.M.<buildId % 65536>). -->
+    <Version>0.1.0-alpha</Version>
+    <Authors>Curiosity GmbH</Authors>
+    <Company>Curiosity GmbH</Company>
+    <Copyright>Copyright (c) Curiosity GmbH</Copyright>
+    <PackageIcon>logo.png</PackageIcon>
+    <PackageProjectUrl>https://x-ray.curiosity.ai/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/curiosity-ai/x-ray</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TF_BUILD)' == 'true' or '$(CI)' == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+  </PropertyGroup>
+
+  <!-- The family icon, packed into every package that names it. The README links the logo by
+       absolute URL instead, since nuget.org renders neither relative image paths nor raw HTML. -->
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)assets/logo.png" Pack="true" PackagePath="/" Visible="false" />
+  </ItemGroup>
+</Project>
