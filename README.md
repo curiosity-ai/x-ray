@@ -100,5 +100,5 @@ Build the docs (needs the Neko .NET tool, `dotnet tool update --global Neko`):
 ## License
 
 Each package carries its own license, listed above. The umbrella's license expression,
-`MIT AND Apache-2.0 AND MPL-2.0`, covers what it installs. The contents of this repository
+`MIT AND Apache-2.0 AND MPL-2.0 AND OFL-1.1 AND Bitstream-Vera`, covers what it installs. The contents of this repository
 (build files, docs) are MIT.

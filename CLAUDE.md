@@ -103,7 +103,7 @@ ProjectReferences.
 - `IncludeBuildOutput=false` (no empty `XRay.dll`), `NU5128` suppressed (it is the warning for a
   package with dependencies and no `lib/`, which is what a metapackage is),
   `SuppressDependenciesWhenPacking=false` (the dependencies are the payload).
-- Its licence expression covers what it installs: `MIT AND Apache-2.0 AND MPL-2.0`. Update it if
+- Its licence expression covers what it installs: `MIT AND Apache-2.0 AND MPL-2.0 AND OFL-1.1 AND Bitstream-Vera`. Update it if
   a member with a new licence joins.
 - List a member's facade or root package (`X-Ray.Office`, which brings `X-Ray.Office.*`), plus
   optional add-ons a consumer would otherwise have to know about (`X-Ray.Psd.Skia`).
