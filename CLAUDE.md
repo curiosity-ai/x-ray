@@ -122,6 +122,11 @@ ProjectReferences.
   a member with a new licence joins.
 - List a member's facade or root package (`X-Ray.Office`, which brings `X-Ray.Office.*`), plus
   optional add-ons a consumer would otherwise have to know about (`X-Ray.Psd.Skia`).
+- It also names `SkiaSharp.NativeAssets.Linux` and `HarfBuzzSharp.NativeAssets.Linux`
+  (`XRaySkiaSharpLinuxVersion`, `XRayHarfBuzzSharpLinuxVersion` in `XRay.csproj`). The `.Skia`
+  add-ons raise managed SkiaSharp above the Linux native X-Ray.Office asks for, and SkiaSharp
+  refuses an older native on first use, so without them every render fails on Linux. Keep them
+  at the highest SkiaSharp / HarfBuzzSharp any member depends on; drop them once members agree.
 
 **Adding a family member** is one line in `Members.props`, a row in `README.md` and
 `src/XRay/README.md`, a docs section, and (if the licence is new) the expression. The
