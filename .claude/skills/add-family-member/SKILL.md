@@ -108,8 +108,9 @@ curiosity-ai/sentence-transformers-sharp uses). Three things that failed once an
   task's own nuget.exe accepts it. A symbol package beside each `.nupkg` is a second push, and in
   x-ray-others and x-ray-office the first package went out and the push then stopped. Set
   `IncludeSymbols` false and `DebugType` embedded.
-- **`packagesToPack` is split on semicolons only**, while `projects` for restore and build takes one
-  path per line. A newline-separated list for `packagesToPack` matches no file.
+- **Let the build write the packages** (`/p:GeneratePackageOnBuild=true`, push
+  `**/bin/<config>/*.nupkg`) instead of a `pack` step over a project list: a semicolon-separated
+  `packagesToPack` packed only the first project, so one package of eight or thirteen was pushed.
 - **A path filter** so only the package's own folder, and the shared build files, trigger a run. A
   pipeline that serves a whole repository publishes every package at the new version, which is fine:
   ids do not collide, and a package whose code did not change just gets a new number.

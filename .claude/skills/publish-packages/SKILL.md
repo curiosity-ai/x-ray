@@ -30,8 +30,10 @@ suffixes. Packages built in the same run share one version.
 
 Gotchas:
 
-- `packagesToPack` is a pattern input split on **semicolons only**; `projects` (restore/build)
-  is one path per line. Build a `packList` variable joined with `;` for pack.
+- **Do not use a separate `pack` step for several projects.** In x-ray-others and x-ray-office a
+  semicolon-separated `packagesToPack` list packed only the first project, so only one package
+  reached nuget.org. Build with `/p:GeneratePackageOnBuild=true` (one package per project, as
+  sentence-transformers-sharp does) and push `**/bin/<config>/*.nupkg`.
 - Packing with `nobuild: true` reuses the build's output, so every MSBuild property that
   changes the package (version, member versions) must go to build **and** pack.
 - A ProjectReference to another packable project becomes a package dependency at the version
