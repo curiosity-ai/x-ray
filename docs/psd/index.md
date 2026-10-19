@@ -77,6 +77,10 @@ foreach (var layer in document.EnumerateLayersTopDown())
 Hide layers while rendering, for example every type layer:
 
 ```csharp
+using XRay.Psd;
+using XRay.Psd.Rendering;
+
+var document = PsdDocument.Load("poster.psd");
 var withoutText = document.Render(new RenderOptions
 {
     LayerVisibility = layer => layer.IsVisible && layer.Kind != PsdLayerKind.Text,
@@ -89,7 +93,11 @@ var withoutText = document.Render(new RenderOptions
 them or when the text should be drawn with other fonts:
 
 ```csharp
+using XRay.Psd;
+using XRay.Psd.Rendering;
 using XRay.Psd.Text;
+
+var document = PsdDocument.Load("poster.psd");
 
 var fonts = new FontCollection();
 fonts.AddFile("fonts/LiberationSans-Regular.ttf");
@@ -104,13 +112,16 @@ document.Render(new RenderOptions { TextRasterizer = rasterizer }).SavePng("fill
 
 ## Rendering coverage
 
-The layer compositor follows Photoshop's blending rules for groups, clipping, masks, fills,
-layer effects (shadows, glows, overlays, satin, strokes, bevel and emboss) and the common
-adjustments (Levels, Curves, Hue/Saturation, Brightness/Contrast, Exposure, Invert, Threshold,
-Posterize). Not yet rendered from layers: vector strokes on shape layers, Blend If, and some
-adjustments (Color Balance, Vibrance, Black and White, Channel Mixer, Selective Color, Gradient
-Map, Photo Filter). Documents saved with "Maximize Compatibility" render exactly, through the
-merged image.
+The layer compositor follows Photoshop's blending rules for groups, clipping, knockout, masks,
+fills, layer effects, vector strokes and adjustments. A document saved with "Maximize
+Compatibility" renders exactly through the merged image Photoshop stored. The
+[rendering page](/psd/rendering) lists what is rendered, how it was checked and what is not.
+
+## Beyond rendering
+
+[Streams, cancellation and large files](/psd/streams-and-cancellation) covers `CancellationToken`
+overloads, rendering straight into a stream, band rendering for documents that do not fit in one
+canvas, memory-mapped loading and asynchronous loading.
 
 ## License
 
