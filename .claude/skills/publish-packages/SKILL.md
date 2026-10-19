@@ -16,14 +16,13 @@ Each repository has an Azure DevOps pipeline under `.devops/` (x-ray-content:
 2. `UseDotNet@2` installs the .NET 10 SDK (`version: 10.x`).
 3. `DotNetCoreCLI@2` restore, build with `/p:Version=$(targetVersion)`, pack with
    `versioningScheme: 'off'`, `nobuild: true`, `buildProperties: 'Version="$(targetVersion)"'`.
-4. One `NuGetCommand@2` push per package, from `.devops/templates/push-nuget.yml`
-   (`$(Build.ArtifactStagingDirectory)/<id>.$(targetVersion).nupkg`, `allowPackageConflicts: true`,
-   `nuGetFeedType: external`, `publishFeedCredentials: 'nuget-curiosity-org'`), each running even if an
-   earlier push failed (`succeededOrFailed()` plus a `packed` flag set after pack). A single glob push
-   stopped at the first failing package and left the rest unpublished; `allowPackageConflicts` makes a
-   re-run of the same build complete the set instead of failing on packages already pushed. The pipeline installs
-   NuGet with `NuGetToolInstaller@1` and `versionSpec: '>=7.6.0'`, because API key service connections
-   fail on older nuget.exe (6.4.0 was the failure seen).
+4. One `NuGetCommand@2` push of `$(Build.ArtifactStagingDirectory)/**/*.nupkg` with
+   `nuGetFeedType: external`, `publishFeedCredentials: 'nuget-curiosity-org'`, as
+   curiosity-ai/sentence-transformers-sharp does. **No `NuGetToolInstaller` step**: it put nuget.exe 6.4
+   on the path, which refuses an API key service connection (`require NuGet 7.6 or later`); the push
+   task's own bundled nuget.exe accepts it. **No `.snupkg` symbol packages** (`IncludeSymbols` false,
+   `DebugType` embedded): in x-ray-others and x-ray-office, where each package had one, the first
+   package was published and the push stopped there.
 
 Triggers are `main` (x-ray-office: `master`) with a path filter, so a commit that does not touch
 the package does not publish a new version. Versions only go up; there are no prerelease

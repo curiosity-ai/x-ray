@@ -84,7 +84,7 @@ as "the MIT-licensed library it was ported from".
 ## Versioning and publishing
 
 - Every package is versioned **CalVer `yy.M.<buildId % 65536>`**, computed by its repository's
-  Azure DevOps pipeline (`.devops/*.yml`, `windows-latest`, `UseDotNet@2` 10.x, NuGet 7.6 or later),
+  Azure DevOps pipeline (`.devops/*.yml`, `windows-latest`, `UseDotNet@2` 10.x, one `NuGetCommand@2` glob push, no NuGetToolInstaller step),
   which packs and pushes to nuget.org through the **`nuget-curiosity-org`** service connection.
   x-ray-others and x-ray-office each publish all their packages from one pipeline at one version. Checked-in
   `<Version>` values (`0.1.0-alpha`) are placeholders for local builds.

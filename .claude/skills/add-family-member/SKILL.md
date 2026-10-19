@@ -99,14 +99,15 @@ Each repository has the pipeline that publishes its packages, and a new package 
 
 For a repository with no pipeline yet, copy `curiosity-ai/x-ray-content/.devops/build-x-ray-nuget.yml`:
 `windows-latest`, a PowerShell step computing CalVer `yy.M.<buildId % 65536>` into `targetVersion`,
-`UseDotNet@2` 10.x, restore/build/pack with `/p:Version=$(targetVersion)`, and a push step per package
-(`templates/push-nuget.yml`: `NuGetCommand@2`, `publishFeedCredentials: 'nuget-curiosity-org'`,
-`allowPackageConflicts: true`; list the new package's id in the template's `packages`). Three things that failed once and are easy to
-repeat:
+`UseDotNet@2` 10.x, restore/build/pack with `/p:Version=$(targetVersion)`, and one
+`NuGetCommand@2` push of `**/*.nupkg` with `publishFeedCredentials: 'nuget-curiosity-org'` (the shape
+curiosity-ai/sentence-transformers-sharp uses). Three things that failed once and are easy to repeat:
 
-- **`NuGetToolInstaller@1` with `versionSpec: '>=7.6.0'` before the push.** The service connection
-  authenticates with an API key, and the task's default nuget.exe (6.x) refuses it with "require NuGet
-  7.6 or later".
+- **No `NuGetToolInstaller` step, and no `.snupkg` symbol packages.** The installer put nuget.exe 6.4
+  on the path, which refuses the API-key service connection ("require NuGet 7.6 or later"); the push
+  task's own nuget.exe accepts it. A symbol package beside each `.nupkg` is a second push, and in
+  x-ray-others and x-ray-office the first package went out and the push then stopped. Set
+  `IncludeSymbols` false and `DebugType` embedded.
 - **`packagesToPack` is split on semicolons only**, while `projects` for restore and build takes one
   path per line. A newline-separated list for `packagesToPack` matches no file.
 - **A path filter** so only the package's own folder, and the shared build files, trigger a run. A
