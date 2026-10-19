@@ -3,8 +3,8 @@
 X-Ray is a family of pure C# .NET 10 NuGet packages from Curiosity GmbH for working with
 documents: content extraction for search and LLMs, rendering to PDF and images, and in-depth
 readers for specific file types. This repository (`curiosity-ai/x-ray`) is the family's root:
-the `X-Ray` umbrella package, the documentation site, and the notes and skills shared by every
-repository. Read this file before working anywhere in the family; each member repository has
+the `X-Ray` umbrella package and the notes and skills shared by every repository (the docs are in
+`curiosity-ai/documentation`, see below). Read this file before working anywhere in the family; each member repository has
 its own `CLAUDE.md` for its code, and that file wins inside that repository.
 
 Keep this file under 15 KB. Procedures belong in `.claude/skills/<name>/SKILL.md`.
@@ -13,7 +13,8 @@ Keep this file under 15 KB. Procedures belong in `.claude/skills/<name>/SKILL.md
 
 | Repository | Local clone (agent sessions) | Packages | What it is |
 |---|---|---|---|
-| `curiosity-ai/x-ray` | `/home/user/x-ray` | `X-Ray` | This repo: umbrella package, docs site, shared skills. |
+| `curiosity-ai/x-ray` | `/home/user/x-ray` | `X-Ray` | This repo: umbrella package, shared skills and notes. |
+| `curiosity-ai/documentation` | `/home/user/documentation` | none | All of Curiosity's docs; the family's are in its `x-ray/` folder (see Documentation below). |
 | `curiosity-ai/x-ray-content` | `/home/user/x-ray-content` | `X-Ray.Content` | Content extraction (text, Markdown, HTML, JSON, metadata, tables, images; 90+ formats). Native C# port of the Rust `xberg` engine; C# in `dotnet/`, Rust upstream verbatim in `.reference/`. |
 | `curiosity-ai/x-ray-office` | `/home/user/x-ray-office` | `X-Ray.Office`, `X-Ray.Office.*` | C# port of LibreOffice's Writer/Calc/Impress readers and layout, rendering doc/docx/xls/xlsx/ppt/pptx/odt/ods/odp/rtf to PDF and images. C# in `dotnet/`; the surrounding LibreOffice tree is reference only, never built. Formerly "Paperless". Default branch `master`. |
 | `curiosity-ai/x-ray-others` | `/home/user/x-ray-others` | `X-Ray.Psd` (+ `.Skia`, `.Text`), `X-Ray.Email`, `X-Ray.Ics`, `X-Ray.PS` (+ `.Skia`), `X-Ray.OneNote` | Single-format packages, one top-level folder each, sharing one build skeleton. |
@@ -40,7 +41,7 @@ umbrella lists the facade only, which brings the rest.
 
 Every package takes a `CancellationToken` last on public methods that do real work, throws
 `OperationCanceledException` and nothing else when cancelled, and writes large outputs to a
-`Stream`. The docs page `getting-started/cancellation-and-streaming` states the convention.
+`Stream`. The docs page `x-ray/getting-started/cancellation-and-streaming` (in `curiosity-ai/documentation`) states the convention.
 
 Some members are ports of third-party open-source code (X-Ray.Ics is not: it was written from the RFCs). Credit an upstream the way its license
 requires (keep its LICENSE and notices), but **do not name the vendor of the email, PS/XPS and
@@ -124,7 +125,7 @@ ProjectReferences.
   optional add-ons a consumer would otherwise have to know about (`X-Ray.Psd.Skia`).
 
 **Adding a family member** is one line in `Members.props`, a row in `README.md` and
-`src/XRay/README.md`, a docs section, and (if the licence is new) the expression. The
+`src/XRay/README.md`, a docs section (in `curiosity-ai/documentation`), and (if the licence is new) the expression. The
 `add-family-member` skill has the whole procedure, including the member's own repository side.
 
 ## Test fixtures: `curiosity-ai/test_documents`
@@ -137,43 +138,33 @@ naming their source. Repositories consume it as a git submodule at `test_documen
 absent. X-Ray.Content's golden `*-results-rust.json` files are generated locally, never
 committed. See the `test-documents` skill.
 
-## Documentation site (`docs/`)
+## Documentation: `curiosity-ai/documentation`, folder `x-ray/`
 
-Built with **Neko** (a .NET global tool, `dotnet tool update --global Neko`; the executable is
-`Neko`, add `~/.dotnet/tools` to `PATH`). Modelled on `curiosity-ai/documentation`, whose
-`.claude/` holds the full Neko component reference (alerts, tabs, cards, hero, ...).
+**The family's documentation is not in this repository.** It lives in the `x-ray/` folder of
+[curiosity-ai/documentation](https://github.com/curiosity-ai/documentation) (clone:
+`/home/user/documentation` in agent sessions), built and published with the rest of Curiosity's
+docs at <https://docs.curiosity.ai/x-ray/>. No repository in the family builds or publishes docs.
 
-- `docs/neko.yml`: branding, header links, `url: xray.curiosity.ai`. Neko emits root-relative
-  links and has no base-path option, so the site needs its own hostname rather than
-  `curiosity-ai.github.io/x-ray/`; Neko writes `url`'s host to `CNAME`. The DNS record
-  (`xray.curiosity.ai` CNAME `curiosity-ai.github.io`) and GitHub Pages on `gh-pages` are set
-  up outside the repository.
+- **A change to a package's public API, options, defaults, behavior, limits, licence, install
+  instructions or supported formats is not finished until its page in that folder is updated.**
+  Open the documentation PR against `curiosity-ai/documentation` (never against a source
+  repository, and never against an upstream), link it from the code PR, and say so in the code PR
+  if no page needs to change. Every `CLAUDE.md` in the family carries this rule.
 - Sections: `getting-started/`, one folder per package (`content/`, `office/`, `psd/`, `email/`,
-  `ics/`, `ps/`, `onenote/`), `contributing/`. Each folder has `index.yml` (label, icon, order) and
-  `index.md`.
-- Build: `./build.sh` or `build.bat` (`neko build -i docs -o .build`). Check links with
-  `Neko check-links -i docs` before committing; it must report no broken links.
-- Publish: `.github/workflows/docs.yml` (GitHub Actions, not Azure DevOps; the same shape as
-  curiosity-ai/website's) builds on `main` (path filter `docs/**`, `build.sh`, the workflow) and
-  force-pushes `.build/` to `gh-pages` with `.nojekyll`, using the workflow's own `GITHUB_TOKEN`.
-  Only SHA-pinned `actions/*` steps are allowed by the organisation's policy; the rest is shell.
-  The package pipelines stay on Azure DevOps (`.devops/`).
-- Code samples must use the package's real API. Mark a page you could not verify with a
-  `!!! warning Stub` block rather than guessing.
-- Tone: reference docs, not marketing. No hype words, no em dashes in prose. See the
-  `docs-site` skill.
+  `ics/`, `ps/`, `onenote/`), `contributing/`. A new family member needs a folder there too (see
+  the `add-family-member` and `docs-site` skills).
+- Links inside it are root-relative with the `/x-ray` prefix (`/x-ray/content/`); code samples
+  use the package's real API; tone is reference docs, not marketing. The documentation
+  repository's own `.claude/CLAUDE.md` has the Neko component reference and the tone rules.
 
 ## Layout of this repository
 
 ```
 src/XRay/                 XRay.csproj, Members.props, README.md (the package README)
-docs/                     Neko site
-assets/logo.png           family icon (also docs/assets/logo.png)
+assets/logo.png           family icon
 .devops/                  build-x-ray-nuget.yml, resolve-member-versions.ps1 (Azure DevOps, the umbrella)
-.github/workflows/        docs.yml (GitHub Actions, the docs site)
-.claude/skills/           add-family-member, publish-packages, test-documents, docs-site
 Directory.Build.props     shared metadata and icon packing
-build.sh, build.bat       docs build
+.claude/skills/           add-family-member, publish-packages, test-documents, docs-site
 ```
 
 Commands:
@@ -181,5 +172,4 @@ Commands:
 ```sh
 dotnet build src/XRay -c Release                       # warns XRAY001 per member without versions
 dotnet pack src/XRay -c Release -o artifacts $(pwsh .devops/resolve-member-versions.ps1)
-./build.sh && Neko check-links -i docs
 ```

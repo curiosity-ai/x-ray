@@ -15,7 +15,7 @@
     <Company>Curiosity GmbH</Company>
     <Copyright>Copyright (c) Curiosity GmbH</Copyright>
     <PackageIcon>logo.png</PackageIcon>
-    <PackageProjectUrl>https://xray.curiosity.ai/</PackageProjectUrl>
+    <PackageProjectUrl>https://docs.curiosity.ai/x-ray/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/curiosity-ai/x-ray</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>

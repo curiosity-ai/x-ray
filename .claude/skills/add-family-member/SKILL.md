@@ -16,7 +16,7 @@ A member is not finished until every item is done. The last two are the ones tha
 - [ ] Project, csproj metadata, licence, README (sections 2 and 3).
 - [ ] A pipeline in the member's repository that publishes to nuget.org (section 4).
 - [ ] `src/XRay/Members.props` line, README rows, `XRay.csproj` description and tags (section 5).
-- [ ] **Add the docs section** (`docs/<name>/`, section 6): an overview and topic pages, the card, the
+- [ ] **Add the docs section** (`x-ray/<name>/` in curiosity-ai/documentation, section 6): an overview and topic pages, the card, the
       installation and choosing rows, the header link. Every code sample compiled against the
       package's real API.
 - [ ] **Publish in order**: the member's pipeline first, then the umbrella (section 7).
@@ -126,20 +126,22 @@ curiosity-ai/sentence-transformers-sharp uses). Three things that failed once an
    Nothing else in the build or pipeline changes; the resolver reads this file.
 2. If the licence is new to the family, extend `PackageLicenseExpression` in
    `src/XRay/XRay.csproj` and the licence lists in `README.md`, `src/XRay/README.md` and
-   `docs/getting-started/installation.md`.
+   `x-ray/getting-started/installation.md` in curiosity-ai/documentation.
 3. Add the package to the tables in `README.md` and `src/XRay/README.md`, and to the
    `Description` and `PackageTags` of `XRay.csproj`.
 4. Update `CLAUDE.md`'s repository map if it is in a new repository.
 
-## 6. Docs section (curiosity-ai/x-ray `docs/`)
+## 6. Docs section (curiosity-ai/documentation, `x-ray/`)
 
-- `docs/<short-name>/index.yml` (`label: X-Ray.Djvu`, `icon`, `order`) and `index.md` with an
+The docs live in the `x-ray/` folder of curiosity-ai/documentation, not here. Open a PR there:
+
+- `x-ray/<short-name>/index.yml` (`label: X-Ray.Djvu`, `icon`, `order`) and `index.md` with an
   overview, the install command, a quick start from the real API, and the licence. Use a
   `!!! warning Stub` block for anything you could not verify.
-- Add a card to `docs/index.md`, rows to `docs/getting-started/installation.md` (install list,
-  namespace table, native dependencies, licences) and `choosing-a-package.md`, and a header link
-  under "Packages" in `docs/neko.yml`.
-- Build and check: `./build.sh && Neko check-links -i docs`. See the `docs-site` skill.
+- Add a card to `x-ray/index.md`, rows to `x-ray/getting-started/installation.md` (install list,
+  namespace table, native dependencies, licences) and `choosing-a-package.md`.
+- Links carry the `/x-ray` prefix. Build and check from the documentation repository root:
+  `Neko check-links -i .`. See the `docs-site` skill.
 
 ## 7. Publish
 
@@ -156,8 +158,8 @@ The order is fixed: **members first, then the umbrella.**
 Running the umbrella first is not an error, only a missed member: an id with no published version
 is left out of the package with warning `XRAY001`, and the next umbrella run after the member ships
 picks it up. Tick `strictMembers` (or pass `-p:XRayRequireAllMembers=true`) when a release must
-contain every member. A docs-only change to the member's page can be published at any time, since the
-docs pipeline is independent of both. See `publish-packages`.
+contain every member. A docs-only change to the member's page can be published at any time: the
+docs are built by curiosity-ai/documentation, independent of both. See `publish-packages`.
 
 ## Lessons from adding X-Ray.Ics
 
@@ -171,7 +173,8 @@ docs pipeline is independent of both. See `publish-packages`.
   the repository that references the member's projects by path, extract the fenced `csharp`
   blocks of the new pages into it, and build. A sample that does not compile is a page that
   lies.
-- Docs link to each other root-relative and extensionless; `Neko check-links -i docs` does not
-  check `#anchors`, so grep the built page for the `id` of a heading you link to.
+- Docs link to each other root-relative, extensionless and with the `/x-ray` prefix; check them
+  with `Neko check-links -i .` in curiosity-ai/documentation, and grep the built page for the `id` of
+  a heading you link to when the checker skips anchors.
 - Do not write a vendor's name that a licence forbids you to repeat; see the rule in `CLAUDE.md`.
 

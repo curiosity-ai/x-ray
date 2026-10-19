@@ -4,7 +4,7 @@
 
 [![NuGet](https://img.shields.io/nuget/v/X-Ray?label=NuGet&color=5c2d91&logo=nuget&logoColor=white)](https://www.nuget.org/packages/X-Ray/)
 [![Downloads](https://img.shields.io/nuget/dt/X-Ray?label=downloads&color=5c2d91)](https://www.nuget.org/packages/X-Ray/)
-[![Docs](https://img.shields.io/badge/docs-xray.curiosity.ai-007ec6)](https://xray.curiosity.ai/)
+[![Docs](https://img.shields.io/badge/docs-docs.curiosity.ai%2Fx--ray-007ec6)](https://docs.curiosity.ai/x-ray/)
 
 The umbrella package for the **X-Ray** family of .NET libraries: pure C# packages for content
 extraction, for rendering documents to PDF and images, and for reading specific file types.
@@ -55,7 +55,7 @@ version to move just that one.
 
 ## Links
 
-- [Documentation](https://xray.curiosity.ai/)
+- [Documentation](https://docs.curiosity.ai/x-ray/)
 - [Source](https://github.com/curiosity-ai/x-ray), and each member's own repository from the docs
 - [Issues](https://github.com/curiosity-ai/x-ray/issues)
 
