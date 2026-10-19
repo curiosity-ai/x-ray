@@ -102,5 +102,5 @@ prerelease suffixes; a higher version is a newer build.
 | X-Ray.Content | MIT AND Apache-2.0 (a few files derive from Apache-2.0-only Rust crates) |
 | X-Ray.Office | MPL-2.0 (derived from LibreOffice) |
 | X-Ray.Psd, X-Ray.Psd.Skia, X-Ray.Psd.Text, X-Ray.Email, X-Ray.Ics, X-Ray.PS.Skia, X-Ray.OneNote | MIT |
-| X-Ray.PS | MIT AND OFL-1.1 AND Bitstream-Vera (it bundles Liberation Serif under OFL-1.1 and DjVu Dingbats under the Bitstream Vera licence) |
-| X-Ray (umbrella) | MIT AND Apache-2.0 AND MPL-2.0 AND OFL-1.1 AND Bitstream-Vera, covering what it installs |
+| X-Ray.PS | MIT AND OFL-1.1 (it bundles Liberation Serif under OFL-1.1 and DjVu Dingbats under the Bitstream Vera licence) |
+| X-Ray (umbrella) | MIT AND Apache-2.0 AND MPL-2.0 AND OFL-1.1, covering what it installs |

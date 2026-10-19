@@ -61,7 +61,7 @@ version to move just that one.
 
 ## License
 
-`MIT AND Apache-2.0 AND MPL-2.0 AND OFL-1.1 AND Bitstream-Vera`. The expression covers what this package installs:
+`MIT AND Apache-2.0 AND MPL-2.0 AND OFL-1.1`. The expression covers what this package installs:
 
 - `X-Ray.Content` is MIT, except a handful of files derived from Apache-2.0-only Rust crates,
   which keep that license.

@@ -22,9 +22,10 @@
     <!-- A metapackage's expression has to cover what it installs, not what it contains (nothing).
          X-Ray.Content is MIT AND Apache-2.0 (some files derive from Apache-2.0-only Rust crates),
          X-Ray.Office is MPL-2.0 (it derives from LibreOffice), and its X-Ray.Office.Text member adds
-         OFL-1.1, Apache-2.0 and Bitstream-Vera for the fonts it bundles; X-Ray.PS is MIT AND OFL-1.1
-         AND Bitstream-Vera for the same reason; the other members, X-Ray.Ics among them, are MIT. -->
-    <PackageLicenseExpression>MIT AND Apache-2.0 AND MPL-2.0 AND OFL-1.1 AND Bitstream-Vera</PackageLicenseExpression>
+         OFL-1.1 and Apache-2.0 for the fonts it bundles; X-Ray.PS is MIT AND OFL-1.1 for the same
+         reason. The Bitstream Vera licence of the DejaVu and DjVu fonts is not in any expression, because
+         nuget.org accepts only OSI or FSF approved ids and rejects Bitstream-Vera; the other members, X-Ray.Ics among them, are MIT. -->
+    <PackageLicenseExpression>MIT AND Apache-2.0 AND MPL-2.0 AND OFL-1.1</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageTags>x-ray;metapackage;document;extraction;content;office;pdf;psd;email;ics;icalendar;postscript;xps;onenote</PackageTags>
     <IsPackable>true</IsPackable>

@@ -30,7 +30,7 @@ The packages themselves live in the repositories below.
 | [`X-Ray.Psd.Text`](https://www.nuget.org/packages/X-Ray.Psd.Text/) | Re-renders PSD type layers from their text (SkiaSharp, HarfBuzz). | [x-ray-others](https://github.com/curiosity-ai/x-ray-others) | MIT |
 | [`X-Ray.Email`](https://www.nuget.org/packages/X-Ray.Email/) | Outlook MSG, EML and Compound File Binary: read, create, convert, HTML preview, attachments as files. | [x-ray-others](https://github.com/curiosity-ai/x-ray-others) | MIT |
 | [`X-Ray.Ics`](https://www.nuget.org/packages/X-Ray.Ics/) | iCalendar and vCalendar 1.0: reader, typed events, recurrence expansion, extraction to HTML, text and Markdown, writer. | [x-ray-others](https://github.com/curiosity-ai/x-ray-others) | MIT |
-| [`X-Ray.PS`](https://www.nuget.org/packages/X-Ray.PS/) | PostScript, EPS and XPS: reading and conversion to PDF and images. | [x-ray-others](https://github.com/curiosity-ai/x-ray-others) | MIT AND OFL-1.1 AND Bitstream-Vera (bundled fonts) |
+| [`X-Ray.PS`](https://www.nuget.org/packages/X-Ray.PS/) | PostScript, EPS and XPS: reading and conversion to PDF and images. | [x-ray-others](https://github.com/curiosity-ai/x-ray-others) | MIT AND OFL-1.1 (bundled fonts) |
 | [`X-Ray.PS.Skia`](https://www.nuget.org/packages/X-Ray.PS.Skia/) | Optional SkiaSharp raster writer for X-Ray.PS (anti-aliased output, XPS opacity masks). | [x-ray-others](https://github.com/curiosity-ai/x-ray-others) | MIT |
 | [`X-Ray.OneNote`](https://www.nuget.org/packages/X-Ray.OneNote/) | OneNote `.one`: pages, text, images, tables, export to PDF and HTML. | [x-ray-others](https://github.com/curiosity-ai/x-ray-others) | MIT |
 
@@ -102,5 +102,5 @@ Build the docs (needs the Neko .NET tool, `dotnet tool update --global Neko`):
 ## License
 
 Each package carries its own license, listed above. The umbrella's license expression,
-`MIT AND Apache-2.0 AND MPL-2.0 AND OFL-1.1 AND Bitstream-Vera`, covers what it installs. The contents of this repository
+`MIT AND Apache-2.0 AND MPL-2.0 AND OFL-1.1`, covers what it installs. The contents of this repository
 (build files, docs) are MIT.

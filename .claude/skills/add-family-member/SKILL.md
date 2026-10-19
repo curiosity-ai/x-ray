@@ -166,7 +166,7 @@ docs pipeline is independent of both. See `publish-packages`.
   unresolved member, not an error.
 - A package can have a licence the umbrella's expression already covers (X-Ray.Ics is MIT) or
   one it does not. Check the member's csproj, not only its `Directory.Build.props`: X-Ray.PS
-  overrides the shared MIT with `MIT AND OFL-1.1 AND Bitstream-Vera` for the fonts it bundles.
+  overrides the shared MIT with `MIT AND OFL-1.1` for the fonts it bundles.
 - Write the docs from the source and compile the samples. Keep a scratch console project outside
   the repository that references the member's projects by path, extract the fenced `csharp`
   blocks of the new pages into it, and build. A sample that does not compile is a page that

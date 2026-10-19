@@ -87,5 +87,5 @@ X-Ray.Office renders Word, Excel and PowerPoint documents. X-Ray.PS renders Post
 ## License
 
 MIT, with the bundled Liberation Serif (OFL-1.1) and DjVu Dingbats (Bitstream Vera licence) fonts
-under their own terms, so the package's licence expression is `MIT AND OFL-1.1 AND Bitstream-Vera`.
+under their own terms, so the package's licence expression is `MIT AND OFL-1.1`.
 The `NOTICE` file in the package lists every third-party item, the ICC profile included.
