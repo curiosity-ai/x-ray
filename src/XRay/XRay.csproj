@@ -55,6 +55,28 @@
     <PackageReference Include="@(XRayMember)" Exclude="@(_XRayUnresolvedMember)" PrivateAssets="none" />
   </ItemGroup>
 
+  <!-- The Linux natives of SkiaSharp and HarfBuzzSharp, at the managed versions the family
+       resolves to. The members do not agree: X-Ray.PS.Skia, X-Ray.Psd.Skia and X-Ray.Psd.Text
+       raise managed SkiaSharp to 4.153.1 (and, through SkiaSharp.HarfBuzz, HarfBuzzSharp to
+       14.2.1.301), while X-Ray.Office and X-Ray.Content ask for the 4.150.1 / 14.2.1.1 natives.
+       SkiaSharp's own package brings its Windows and macOS natives along but not the Linux one,
+       so NuGet keeps the older Linux native, and the managed library refuses it on first use:
+       "The version of the native libSkiaSharp library (150.0) is incompatible with this version
+       of SkiaSharp", from every render, for any Linux consumer of this package. Naming the natives
+       here at the managed versions makes the graph consistent.
+
+       Keep these equal to the highest SkiaSharp and HarfBuzzSharp any member depends on, and drop
+       them once the members agree among themselves. -->
+  <PropertyGroup>
+    <XRaySkiaSharpLinuxVersion Condition="'$(XRaySkiaSharpLinuxVersion)' == ''">4.153.1</XRaySkiaSharpLinuxVersion>
+    <XRayHarfBuzzSharpLinuxVersion Condition="'$(XRayHarfBuzzSharpLinuxVersion)' == ''">14.2.1.301</XRayHarfBuzzSharpLinuxVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="$(XRaySkiaSharpLinuxVersion)" PrivateAssets="none" />
+    <PackageReference Include="HarfBuzzSharp.NativeAssets.Linux" Version="$(XRayHarfBuzzSharpLinuxVersion)" PrivateAssets="none" />
+  </ItemGroup>
+
   <!-- Say which members were left out, before anything is restored. Restore runs this too, so
        a pipeline log shows the warning next to the dependency list it explains. -->
   <Target Name="XRayReportMembers" BeforeTargets="CollectPackageReferences">
