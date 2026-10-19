@@ -47,12 +47,14 @@ Console.WriteLine(doc.Tables.Count);
 When the file is already in memory, pass the bytes and their MIME type:
 
 ```csharp
+using XRay.Content.Core;
+
 var input = ExtractInput.FromBytes(bytes, "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
 ```
 
 `Extract` does not throw for a bad document. A failure is reported in `result.Errors` with a
 type and a code, and an unsupported MIME type comes back as an empty document with a
-`ProcessingWarning`. `ExtractAsync` takes the same arguments.
+`ProcessingWarning`. `ExtractAsync` takes the same arguments. Both take a `CancellationToken` as an extra last argument; see [Cancellation](/content/cancellation).
 
 ## Output formats
 
@@ -82,7 +84,7 @@ Related options:
 
 - **Office**: Word, Excel, PowerPoint (OOXML and legacy binary), OpenDocument, RTF,
   WordPerfect, HWP/HWPX, iWork
-- **PDF**: text, geometry, tables, form fields, bookmarks, page labels, XMP
+- **PDF**: text, geometry, tables, form fields, annotations, embedded files, bookmarks, page labels, XMP, and encrypted documents opened with a password (see [PDF](/content/pdf))
 - **Markup and web**: HTML, XML, Markdown, MDX, Djot, AsciiDoc, reStructuredText, Org, Typst,
   LaTeX, DocBook, JATS, OPML
 - **Email**: EML, MSG, PST
@@ -91,7 +93,7 @@ Related options:
 - **Academic**: BibTeX and citation formats
 - **Subtitles**: WebVTT
 - **Images**: metadata and EXIF (pixels are read only by the OCR pass)
-- **Photoshop**: PSD/PSB layer structure and type-layer text, through [X-Ray.Psd](/psd/)
+- **Photoshop**: PSD/PSB layer structure and type-layer text, through [X-Ray.Psd](/psd/); see [Photoshop documents](/content/photoshop)
 - **Archives**: ZIP, TAR, 7z, GZip, extracted recursively as child documents
 - **Source code**: identified by extension or shebang
 
@@ -100,6 +102,8 @@ Related options:
 Off by default. Enabling it is the only way the package loads native code:
 
 ```csharp
+using XRay.Content.Core;
+
 var config = new ExtractionConfig
 {
     Ocr = new OcrOptions { Mode = OcrMode.ScanOnly },   // or OcrMode.AllImages
@@ -120,14 +124,32 @@ The recognizer is [PaddleOCR](https://github.com/curiosity-ai/PaddleOCR/), which
 SkiaSharp, and PDFium for rasterising scanned pages. Nothing is downloaded during extraction:
 point `OcrOptions.ModelDirectory` at a checkpoint you have already fetched.
 
+## More in this section
+
+:::: card-grid
+::: card {variant="grid" icon="file-pdf" title="PDF options" link="/content/pdf"}
+Passwords and encryption, annotations, embedded files, form fields, outline, and the error types.
+:::
+::: card {variant="grid" icon="hourglass-end" title="Cancellation" link="/content/cancellation"}
+The token overloads, the ambient token contract, and what cannot be interrupted.
+:::
+::: card {variant="grid" icon="file-psd" title="Photoshop documents" link="/content/photoshop"}
+How a PSD or PSB becomes headings, text and metadata.
+:::
+::::
+
 ## Differences from xberg
 
 The port aims for output identical to xberg's, with documented exceptions. The two that change
 results are the optional OCR pass above, which uses a different engine from xberg's, and
 Excel number formatting: numeric cells are rendered through their number format (`3.2%`,
-`$31,200`) rather than as the raw value, controlled by `XRayOptions.ExcelNumberFormats`. Audio
-and video transcription, embeddings, chunking, keyword extraction and the server modes of xberg
-are out of scope.
+`$31,200`) rather than as the raw value, controlled by `XRayOptions.ExcelNumberFormats`.
+
+The port also adds features xberg does not have. Photoshop files are read by an extractor of
+their own, since xberg has none. The PDF reader gained annotations, embedded files and password
+handling, and extraction can be cancelled. None of these change the output for documents that do
+not use them. Audio and video transcription, embeddings, chunking, keyword extraction and the
+server modes of xberg are out of scope.
 
 The repository's
 [CLAUDE.md](https://github.com/curiosity-ai/x-ray-content/blob/main/CLAUDE.md) describes the
