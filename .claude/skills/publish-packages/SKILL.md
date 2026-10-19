@@ -17,7 +17,9 @@ Each repository has an Azure DevOps pipeline under `.devops/` (x-ray-content:
 3. `DotNetCoreCLI@2` restore, build with `/p:Version=$(targetVersion)`, pack with
    `versioningScheme: 'off'`, `nobuild: true`, `buildProperties: 'Version="$(targetVersion)"'`.
 4. `NuGetCommand@2` push of `$(Build.ArtifactStagingDirectory)/**/*.nupkg` with
-   `nuGetFeedType: external`, `publishFeedCredentials: 'nuget-curiosity-org'`.
+   `nuGetFeedType: external`, `publishFeedCredentials: 'nuget-curiosity-org'`. The pipeline installs
+   NuGet with `NuGetToolInstaller@1` and `versionSpec: '>=7.6.0'`, because API key service connections
+   fail on older nuget.exe (6.4.0 was the failure seen).
 
 Triggers are `main` (x-ray-office: `master`) with a path filter, so a commit that does not touch
 the package does not publish a new version. Versions only go up; there are no prerelease

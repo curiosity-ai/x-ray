@@ -47,7 +47,11 @@ pool:
   vmImage: 'windows-latest'
 
 steps:
-- task: NuGetToolInstaller@0
+# An external service connection with API key authentication (the nuget-curiosity-org push) needs
+# nuget.exe 7.6 or later; the older default fails with 'require NuGet 7.6 or later ... 6.4.0'.
+- task: NuGetToolInstaller@1
+  inputs:
+    versionSpec: '>=7.6.0'
 
 
 - task: PowerShell@2
