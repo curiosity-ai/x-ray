@@ -8,6 +8,19 @@ description: Create a new X-Ray package and wire it into the family - project la
 A new package touches two repositories: the one it lives in, and `curiosity-ai/x-ray` (umbrella,
 READMEs, docs). Do the member side first; the umbrella only picks up what is on nuget.org.
 
+## Checklist
+
+A member is not finished until every item is done. The last two are the ones that get forgotten.
+
+- [ ] Name chosen and `nuget.org/packages/<id>` checked free (section 1).
+- [ ] Project, csproj metadata, licence, README (sections 2 and 3).
+- [ ] A pipeline in the member's repository that publishes to nuget.org (section 4).
+- [ ] `src/XRay/Members.props` line, README rows, `XRay.csproj` description and tags (section 5).
+- [ ] **Add the docs section** (`docs/<name>/`, section 6): an overview and topic pages, the card, the
+      installation and choosing rows, the header link. Every code sample compiled against the
+      package's real API.
+- [ ] **Publish in order**: the member's pipeline first, then the umbrella (section 7).
+
 ## 1. Choose names and a home
 
 | What | Rule | Example |
@@ -72,13 +85,32 @@ import the root one from it.
 
 ## 4. The pipeline
 
-Add the project to the repository's `.devops/*.yml` NuGet pipeline, or copy
-`curiosity-ai/x-ray-content/.devops/build-x-ray-nuget.yml` for a new one: `windows-latest`,
-a PowerShell step computing CalVer `yy.M.<buildId % 65536>` into `targetVersion`,
-`UseDotNet@2` 10.x, restore/build/pack with `/p:Version=$(targetVersion)`, and
-`NuGetCommand@2` push with `publishFeedCredentials: 'nuget-curiosity-org'`. Give it a path filter
-so only this package's folder triggers it. `packagesToPack` is split on semicolons only; a
-newline-separated list matches nothing.
+A family member is only a member once its pipeline **publishes to nuget.org**: the umbrella resolves
+versions from nuget.org, so a package that exists only as a project in a repository, or only on a
+private feed, is not installable through `X-Ray` and the resolver skips it.
+
+Each repository has the pipeline that publishes its packages, and a new package goes into it:
+
+| Repository | Pipeline | To add a package |
+|---|---|---|
+| `x-ray-others` | one for the whole repository, `.devops/build-x-ray-others-nuget.yml`, all packages at one version | Add the project to the variables, the restore and build lists and `packList`, and a path filter for its folder. |
+| `x-ray-content` | `.devops/build-x-ray-nuget.yml` | Add the project. |
+| `x-ray-office` | `.devops/build-x-ray-office-nuget.yml`, the whole set at one version | Add the library to its lists and to the facade's references. |
+
+For a repository with no pipeline yet, copy `curiosity-ai/x-ray-content/.devops/build-x-ray-nuget.yml`:
+`windows-latest`, a PowerShell step computing CalVer `yy.M.<buildId % 65536>` into `targetVersion`,
+`UseDotNet@2` 10.x, restore/build/pack with `/p:Version=$(targetVersion)`, and `NuGetCommand@2` push
+with `publishFeedCredentials: 'nuget-curiosity-org'`. Three things that failed once and are easy to
+repeat:
+
+- **`NuGetToolInstaller@1` with `versionSpec: '>=7.6.0'` before the push.** The service connection
+  authenticates with an API key, and the task's default nuget.exe (6.x) refuses it with "require NuGet
+  7.6 or later".
+- **`packagesToPack` is split on semicolons only**, while `projects` for restore and build takes one
+  path per line. A newline-separated list for `packagesToPack` matches no file.
+- **A path filter** so only the package's own folder, and the shared build files, trigger a run. A
+  pipeline that serves a whole repository publishes every package at the new version, which is fine:
+  ids do not collide, and a package whose code did not change just gets a new number.
 
 ## 5. Register it with the umbrella (curiosity-ai/x-ray)
 
@@ -108,6 +140,35 @@ newline-separated list matches nothing.
 
 ## 7. Publish
 
-Member pipeline first. Once nuget.org lists the package, run the umbrella pipeline so `X-Ray`
-depends on it. Verify with
-`curl -s https://api.nuget.org/v3-flatcontainer/x-ray.djvu/index.json`. See `publish-packages`.
+The order is fixed: **members first, then the umbrella.**
+
+1. The member's pipeline runs on its repository's `main` (or `master`) and pushes the package to
+   nuget.org. A pipeline with a path filter runs only when its own folder changed.
+2. Wait until nuget.org lists the package. Verify with
+   `curl -s https://api.nuget.org/v3-flatcontainer/x-ray.djvu/index.json`. The listing can lag the
+   push by minutes.
+3. Then run the umbrella pipeline so `X-Ray` depends on it. The resolver takes the newest *stable*
+   version listed for each id.
+
+Running the umbrella first is not an error, only a missed member: an id with no published version
+is left out of the package with warning `XRAY001`, and the next umbrella run after the member ships
+picks it up. Tick `strictMembers` (or pass `-p:XRayRequireAllMembers=true`) when a release must
+contain every member. A docs-only change to the member's page can be published at any time, since the
+docs pipeline is independent of both. See `publish-packages`.
+
+## Lessons from adding X-Ray.Ics
+
+- The property in `Members.props` is `XRay` plus the id without hyphens and dots, then `Version`
+  (`X-Ray.PS.Skia` is `XRayPSSkiaVersion`). The resolver reads the file, so a typo is a silently
+  unresolved member, not an error.
+- A package can have a licence the umbrella's expression already covers (X-Ray.Ics is MIT) or
+  one it does not. Check the member's csproj, not only its `Directory.Build.props`: X-Ray.PS
+  overrides the shared MIT with `MIT AND OFL-1.1 AND Bitstream-Vera` for the fonts it bundles.
+- Write the docs from the source and compile the samples. Keep a scratch console project outside
+  the repository that references the member's projects by path, extract the fenced `csharp`
+  blocks of the new pages into it, and build. A sample that does not compile is a page that
+  lies.
+- Docs link to each other root-relative and extensionless; `Neko check-links -i docs` does not
+  check `#anchors`, so grep the built page for the `id` of a heading you link to.
+- Do not write a vendor's name that a licence forbids you to repeat; see the rule in `CLAUDE.md`.
+

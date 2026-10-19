@@ -32,7 +32,7 @@ Neko watch -i docs                        # live preview at http://localhost:500
 docs/neko.yml                  branding, header links (one "Packages" dropdown), url, footer
 docs/index.md                  landing: hero, package cards, how they fit, paths
 docs/getting-started/          index, installation, choosing-a-package
-docs/<package>/                content, office, psd, email, ps, onenote: index.yml + index.md
+docs/<package>/                content, office, psd, email, ics, ps, onenote: index.yml + index.md plus topic pages
 docs/contributing/             development notes, working on the docs
 docs/assets/logo.png           the family logo (branding logo and favicon)
 ```

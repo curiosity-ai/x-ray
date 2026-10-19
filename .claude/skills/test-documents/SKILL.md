@@ -18,6 +18,7 @@ One folder per format, named for the format: `docx/`, `xlsx/`, `pptx/`, `doc/`, 
 | Folder | Read by |
 |---|---|
 | `psd/` | X-Ray.Psd, X-Ray.Content |
+| `ics/` | X-Ray.Ics |
 | `ps/`, `xps/` | X-Ray.PS |
 | `onenote/` | X-Ray.OneNote |
 | `email/` (and per-source subfolders) | X-Ray.Email, X-Ray.Content |
