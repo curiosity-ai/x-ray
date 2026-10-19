@@ -25,10 +25,11 @@ dotnet add package X-Ray
 | [`X-Ray.Psd`](https://www.nuget.org/packages/X-Ray.Psd/) | Photoshop PSD/PSB: layer tree, compositing to PNG/JPEG, and text extraction. No dependencies outside the BCL. |
 | [`X-Ray.Psd.Skia`](https://www.nuget.org/packages/X-Ray.Psd.Skia/) | SkiaSharp interop for X-Ray.Psd (`SKBitmap`, `SKImage`, WebP and other Skia encoders). |
 | [`X-Ray.Psd.Text`](https://www.nuget.org/packages/X-Ray.Psd.Text/) | Re-renders PSD type layers from their text with SkiaSharp and HarfBuzz. |
-| [`X-Ray.Email`](https://www.nuget.org/packages/X-Ray.Email/) | Outlook MSG, EML and Compound File Binary containers: read, create, convert. |
+| [`X-Ray.Email`](https://www.nuget.org/packages/X-Ray.Email/) | Outlook MSG, EML and Compound File Binary containers: read, create, convert, HTML preview, attachments as files. |
+| [`X-Ray.Ics`](https://www.nuget.org/packages/X-Ray.Ics/) | iCalendar and vCalendar 1.0: typed events, recurrence expansion, extraction to HTML, text and Markdown, writer. |
 | [`X-Ray.PS`](https://www.nuget.org/packages/X-Ray.PS/) | PostScript, EPS and XPS: reading, and conversion to PDF and images. |
-| [`X-Ray.PS.Skia`](https://www.nuget.org/packages/X-Ray.PS.Skia/) | Optional SkiaSharp raster writer for X-Ray.PS. | MIT |
-| [`X-Ray.OneNote`](https://www.nuget.org/packages/X-Ray.OneNote/) | OneNote `.one` files: pages, text, images, tables, and export to PDF. |
+| [`X-Ray.PS.Skia`](https://www.nuget.org/packages/X-Ray.PS.Skia/) | Optional SkiaSharp raster writer for X-Ray.PS. |
+| [`X-Ray.OneNote`](https://www.nuget.org/packages/X-Ray.OneNote/) | OneNote `.one` files: pages, text, images, tables, and export to PDF and HTML. |
 
 A member that has not been published yet is not a dependency of this package; it is added by
 the first umbrella release after it ships.
@@ -65,7 +66,9 @@ version to move just that one.
 - `X-Ray.Content` is MIT, except a handful of files derived from Apache-2.0-only Rust crates,
   which keep that license.
 - `X-Ray.Office` is MPL-2.0, matching the LibreOffice source it is derived from.
-- `X-Ray.Psd`, `X-Ray.Psd.Skia`, `X-Ray.Psd.Text`, `X-Ray.Email`, `X-Ray.PS` and `X-Ray.OneNote`
-  are MIT.
+- `X-Ray.Psd`, `X-Ray.Psd.Skia`, `X-Ray.Psd.Text`, `X-Ray.Email`, `X-Ray.Ics`, `X-Ray.PS.Skia` and
+  `X-Ray.OneNote` are MIT.
+- `X-Ray.PS` is MIT, with the fonts it bundles under their own terms: Liberation Serif under OFL-1.1
+  and DjVu Dingbats under the Bitstream Vera licence.
 
 Each member's package carries its own license and notices.

@@ -16,7 +16,7 @@ Keep this file under 15 KB. Procedures belong in `.claude/skills/<name>/SKILL.md
 | `curiosity-ai/x-ray` | `/home/user/x-ray` | `X-Ray` | This repo: umbrella package, docs site, shared skills. |
 | `curiosity-ai/x-ray-content` | `/home/user/x-ray-content` | `X-Ray.Content` | Content extraction (text, Markdown, HTML, JSON, metadata, tables, images; 90+ formats). Native C# port of the Rust `xberg` engine; C# in `dotnet/`, Rust upstream verbatim in `.reference/`. |
 | `curiosity-ai/x-ray-office` | `/home/user/x-ray-office` | `X-Ray.Office`, `X-Ray.Office.*` | C# port of LibreOffice's Writer/Calc/Impress readers and layout, rendering doc/docx/xls/xlsx/ppt/pptx/odt/ods/odp/rtf to PDF and images. C# in `dotnet/`; the surrounding LibreOffice tree is reference only, never built. Formerly "Paperless". Default branch `master`. |
-| `curiosity-ai/x-ray-others` | `/home/user/x-ray-others` | `X-Ray.Psd` (+ `.Skia`, `.Text`), `X-Ray.Email`, `X-Ray.PS`, `X-Ray.OneNote` | Single-format packages, one top-level folder each, sharing one build skeleton. |
+| `curiosity-ai/x-ray-others` | `/home/user/x-ray-others` | `X-Ray.Psd` (+ `.Skia`, `.Text`), `X-Ray.Email`, `X-Ray.Ics`, `X-Ray.PS` (+ `.Skia`), `X-Ray.OneNote` | Single-format packages, one top-level folder each, sharing one build skeleton. |
 | `curiosity-ai/test_documents` | `/home/user/test_documents` | none | Shared fixture corpus: fork of `xberg-io/test_documents`, one folder per format, binaries in git. |
 
 What each `x-ray-others` package is:
@@ -24,11 +24,25 @@ What each `x-ray-others` package is:
 - `X-Ray.Psd`: PSD/PSB reading, compositing, text extraction; no dependencies. `X-Ray.Psd.Skia`
   (SkiaSharp interop) and `X-Ray.Psd.Text` (type-layer re-rendering, SkiaSharp + HarfBuzz) are
   optional add-ons. Ported from the Patchy image editor.
-- `X-Ray.Email`: MSG/EML/CFB reading and writing, MSG to EML conversion.
-- `X-Ray.PS`: PostScript/EPS/XPS reading, conversion to PDF and images.
-- `X-Ray.OneNote`: OneNote `.one` reading, text, PDF export.
+- `X-Ray.Email`: MSG/EML/CFB reading and writing, MSG to EML conversion, HTML preview, body
+  fallbacks, attachments as files.
+- `X-Ray.Ics`: iCalendar (RFC 5545) and vCalendar 1.0: reader, typed model, recurrence expansion,
+  extraction of an appointment to HTML, text and Markdown, writer. Written from the specifications,
+  not a port; no dependencies; MIT.
+- `X-Ray.PS`: PostScript/EPS/XPS reading, conversion to PDF and images, interpreter limits.
+  `X-Ray.PS.Skia` (SkiaSharp) is the optional raster writer that reproduces the original's output.
+- `X-Ray.OneNote`: OneNote `.one` reading, text, PDF and HTML export, best-effort notebook table of
+  contents.
 
-Some members are ports of third-party open-source code. Credit an upstream the way its license
+`X-Ray.Office` is the facade of the `X-Ray.Office.*` libraries (Core, Containers, Text, Vector,
+Rendering, Markup, Ooxml, OpenDocument, MsBinary, WordProcessing, Spreadsheets, Presentations); the
+umbrella lists the facade only, which brings the rest.
+
+Every package takes a `CancellationToken` last on public methods that do real work, throws
+`OperationCanceledException` and nothing else when cancelled, and writes large outputs to a
+`Stream`. The docs page `getting-started/cancellation-and-streaming` states the convention.
+
+Some members are ports of third-party open-source code (X-Ray.Ics is not: it was written from the RFCs). Credit an upstream the way its license
 requires (keep its LICENSE and notices), but **do not name the vendor of the email, PS/XPS and
 OneNote upstreams in anything you write** (code, docs, commits, package metadata). Describe them
 as "the MIT-licensed library it was ported from".
@@ -70,8 +84,9 @@ as "the MIT-licensed library it was ported from".
 ## Versioning and publishing
 
 - Every package is versioned **CalVer `yy.M.<buildId % 65536>`**, computed by its repository's
-  Azure DevOps pipeline (`.devops/*.yml`, `windows-latest`, `UseDotNet@2` 10.x), which packs and
-  pushes to nuget.org through the **`nuget-curiosity-org`** service connection. Checked-in
+  Azure DevOps pipeline (`.devops/*.yml`, `windows-latest`, `UseDotNet@2` 10.x, NuGet 7.6 or later),
+  which packs and pushes to nuget.org through the **`nuget-curiosity-org`** service connection.
+  x-ray-others and x-ray-office each publish all their packages from one pipeline at one version. Checked-in
   `<Version>` values (`0.1.0-alpha`) are placeholders for local builds.
 - Pipelines trigger on `main` (or `master`) with a path filter, so unrelated changes do not
   publish.
@@ -114,7 +129,7 @@ ProjectReferences.
 
 ## Test fixtures: `curiosity-ai/test_documents`
 
-One folder per format (`docx/`, `pdf/`, `email/`, `psd/`, `ps/`, `xps/`, `onenote/`, ...).
+One folder per format (`docx/`, `pdf/`, `email/`, `ics/`, `psd/`, `ps/`, `xps/`, `onenote/`, ...).
 Binaries are committed in git (no LFS). Third-party sets carry a `LICENSE` and a `README.md`
 naming their source. Repositories consume it as a git submodule at `test_documents/`
 (`git submodule update --init --depth 1 test_documents`); tests resolve the root from
@@ -134,7 +149,7 @@ Built with **Neko** (a .NET global tool, `dotnet tool update --global Neko`; the
   (`xray.curiosity.ai` CNAME `curiosity-ai.github.io`) and GitHub Pages on `gh-pages` are set
   up outside the repository.
 - Sections: `getting-started/`, one folder per package (`content/`, `office/`, `psd/`, `email/`,
-  `ps/`, `onenote/`), `contributing/`. Each folder has `index.yml` (label, icon, order) and
+  `ics/`, `ps/`, `onenote/`), `contributing/`. Each folder has `index.yml` (label, icon, order) and
   `index.md`.
 - Build: `./build.sh` or `build.bat` (`neko build -i docs -o .build`). Check links with
   `Neko check-links -i docs` before committing; it must report no broken links.

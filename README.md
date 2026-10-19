@@ -7,7 +7,7 @@
 
 X-Ray is a family of pure C# NuGet packages for .NET 10, from Curiosity GmbH, for working with
 documents: extracting their content for search and LLMs, rendering them to PDF and images, and
-reading specific file types (Photoshop, Outlook email, PostScript/XPS, OneNote) in depth. No
+reading specific file types (Photoshop, Outlook email, iCalendar, PostScript/XPS, OneNote) in depth. No
 office suite or other application has to be installed. The core of each package is managed
 code; where a native library is needed (SkiaSharp, HarfBuzz, PDFium), it sits in an optional
 package or behind an opt-in option.
@@ -28,10 +28,11 @@ The packages themselves live in the repositories below.
 | [`X-Ray.Psd`](https://www.nuget.org/packages/X-Ray.Psd/) | Photoshop PSD/PSB: layer tree, compositing to PNG/JPEG, text extraction. No dependencies. | [x-ray-others](https://github.com/curiosity-ai/x-ray-others) | MIT |
 | [`X-Ray.Psd.Skia`](https://www.nuget.org/packages/X-Ray.Psd.Skia/) | SkiaSharp interop for X-Ray.Psd. | [x-ray-others](https://github.com/curiosity-ai/x-ray-others) | MIT |
 | [`X-Ray.Psd.Text`](https://www.nuget.org/packages/X-Ray.Psd.Text/) | Re-renders PSD type layers from their text (SkiaSharp, HarfBuzz). | [x-ray-others](https://github.com/curiosity-ai/x-ray-others) | MIT |
-| [`X-Ray.Email`](https://www.nuget.org/packages/X-Ray.Email/) | Outlook MSG, EML and Compound File Binary: read, create, convert. | [x-ray-others](https://github.com/curiosity-ai/x-ray-others) | MIT |
-| [`X-Ray.PS`](https://www.nuget.org/packages/X-Ray.PS/) | PostScript, EPS and XPS: reading and conversion to PDF and images. | [x-ray-others](https://github.com/curiosity-ai/x-ray-others) | MIT |
+| [`X-Ray.Email`](https://www.nuget.org/packages/X-Ray.Email/) | Outlook MSG, EML and Compound File Binary: read, create, convert, HTML preview, attachments as files. | [x-ray-others](https://github.com/curiosity-ai/x-ray-others) | MIT |
+| [`X-Ray.Ics`](https://www.nuget.org/packages/X-Ray.Ics/) | iCalendar and vCalendar 1.0: reader, typed events, recurrence expansion, extraction to HTML, text and Markdown, writer. | [x-ray-others](https://github.com/curiosity-ai/x-ray-others) | MIT |
+| [`X-Ray.PS`](https://www.nuget.org/packages/X-Ray.PS/) | PostScript, EPS and XPS: reading and conversion to PDF and images. | [x-ray-others](https://github.com/curiosity-ai/x-ray-others) | MIT AND OFL-1.1 AND Bitstream-Vera (bundled fonts) |
 | [`X-Ray.PS.Skia`](https://www.nuget.org/packages/X-Ray.PS.Skia/) | Optional SkiaSharp raster writer for X-Ray.PS (anti-aliased output, XPS opacity masks). | [x-ray-others](https://github.com/curiosity-ai/x-ray-others) | MIT |
-| [`X-Ray.OneNote`](https://www.nuget.org/packages/X-Ray.OneNote/) | OneNote `.one`: pages, text, images, tables, export to PDF. | [x-ray-others](https://github.com/curiosity-ai/x-ray-others) | MIT |
+| [`X-Ray.OneNote`](https://www.nuget.org/packages/X-Ray.OneNote/) | OneNote `.one`: pages, text, images, tables, export to PDF and HTML. | [x-ray-others](https://github.com/curiosity-ai/x-ray-others) | MIT |
 
 Package ids are hyphenated; assemblies and namespaces are not (`X-Ray.Content` is the
 `XRay.Content` namespace), because a hyphen is not valid in a C# identifier.
@@ -62,7 +63,7 @@ requirements and which packages bring native code.
 curiosity-ai/x-ray             umbrella package, docs site, shared notes and skills
 curiosity-ai/x-ray-content     X-Ray.Content            (C# under dotnet/, Rust upstream in .reference/)
 curiosity-ai/x-ray-office      X-Ray.Office[.*]         (C# under dotnet/, inside a LibreOffice tree)
-curiosity-ai/x-ray-others      X-Ray.Psd[.Skia|.Text], X-Ray.Email, X-Ray.PS, X-Ray.OneNote
+curiosity-ai/x-ray-others      X-Ray.Psd[.Skia|.Text], X-Ray.Email, X-Ray.Ics, X-Ray.PS[.Skia], X-Ray.OneNote
 curiosity-ai/test_documents    the shared fixture corpus, a git submodule of the repositories above
 ```
 

@@ -18,14 +18,15 @@
 
     <!-- NuGet package metadata. Authors, icon and repository come from Directory.Build.props. -->
     <PackageId>X-Ray</PackageId>
-    <Description>The umbrella package for the X-Ray family of .NET libraries. Carries no code of its own: installing it brings in every X-Ray package, for content extraction (X-Ray.Content), rendering office documents to PDF and images (X-Ray.Office), and reading Photoshop (X-Ray.Psd), email (X-Ray.Email), PostScript and XPS (X-Ray.PS) and OneNote (X-Ray.OneNote) files. Install a single member directly if you only need one.</Description>
+    <Description>The umbrella package for the X-Ray family of .NET libraries. Carries no code of its own: installing it brings in every X-Ray package, for content extraction (X-Ray.Content), rendering office documents to PDF and images (X-Ray.Office), and reading Photoshop (X-Ray.Psd), email (X-Ray.Email), iCalendar (X-Ray.Ics), PostScript and XPS (X-Ray.PS) and OneNote (X-Ray.OneNote) files. Install a single member directly if you only need one.</Description>
     <!-- A metapackage's expression has to cover what it installs, not what it contains (nothing).
          X-Ray.Content is MIT AND Apache-2.0 (some files derive from Apache-2.0-only Rust crates),
          X-Ray.Office is MPL-2.0 (it derives from LibreOffice), and its X-Ray.Office.Text member adds
-         OFL-1.1, Apache-2.0 and Bitstream-Vera for the fonts it bundles; the other members are MIT. -->
+         OFL-1.1, Apache-2.0 and Bitstream-Vera for the fonts it bundles; X-Ray.PS is MIT AND OFL-1.1
+         AND Bitstream-Vera for the same reason; the other members, X-Ray.Ics among them, are MIT. -->
     <PackageLicenseExpression>MIT AND Apache-2.0 AND MPL-2.0 AND OFL-1.1 AND Bitstream-Vera</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageTags>x-ray;metapackage;document;extraction;content;office;pdf;psd;email;postscript;xps;onenote</PackageTags>
+    <PackageTags>x-ray;metapackage;document;extraction;content;office;pdf;psd;email;ics;icalendar;postscript;xps;onenote</PackageTags>
     <IsPackable>true</IsPackable>
 
     <!-- A metapackage ships dependencies, not assemblies. `IncludeBuildOutput=false` drops the
