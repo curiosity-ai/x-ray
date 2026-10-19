@@ -44,7 +44,9 @@ dotnet add package X-Ray.Psd        # Photoshop PSD/PSB
 dotnet add package X-Ray.Psd.Skia   # optional: SkiaSharp interop for X-Ray.Psd
 dotnet add package X-Ray.Psd.Text   # optional: re-render PSD type layers
 dotnet add package X-Ray.Email      # MSG, EML, CFB
+dotnet add package X-Ray.Ics        # iCalendar and vCalendar: events, recurrence, writing
 dotnet add package X-Ray.PS         # PostScript, EPS, XPS
+dotnet add package X-Ray.PS.Skia    # optional: SkiaSharp raster output for X-Ray.PS
 dotnet add package X-Ray.OneNote    # OneNote .one
 ```
 
@@ -68,7 +70,8 @@ in a C# identifier:
 | `X-Ray.Office` | `XRay.Office` |
 | `X-Ray.Psd`, `X-Ray.Psd.Skia`, `X-Ray.Psd.Text` | `XRay.Psd`, `XRay.Psd.Skia`, `XRay.Psd.Text` |
 | `X-Ray.Email` | `XRay.Email` |
-| `X-Ray.PS` | `XRay.PS` |
+| `X-Ray.Ics` | `XRay.Ics` |
+| `X-Ray.PS`, `X-Ray.PS.Skia` | `XRay.PS`, `XRay.PS.Skia` |
 | `X-Ray.OneNote` | `XRay.OneNote` |
 
 ## Native dependencies
@@ -81,8 +84,10 @@ The core of every package is managed code. Native code enters only here:
 | X-Ray.Office rendering | SkiaSharp, HarfBuzzSharp | Rasterising pages and shaping text the way LibreOffice does. |
 | X-Ray.Psd.Skia | SkiaSharp | `SKBitmap`/`SKImage` interop and Skia's encoders. |
 | X-Ray.Psd.Text | SkiaSharp, HarfBuzzSharp | Drawing type layers from their text. |
+| X-Ray.PS.Skia | SkiaSharp | Skia raster output for PostScript, EPS and XPS pages. |
 
-`X-Ray.Psd` itself has no dependencies outside the .NET base class library.
+`X-Ray.Psd`, `X-Ray.Email`, `X-Ray.Ics`, `X-Ray.PS` and `X-Ray.OneNote` have no dependencies outside
+the .NET base class library.
 
 ## Versions
 
@@ -96,5 +101,6 @@ prerelease suffixes; a higher version is a newer build.
 |---|---|
 | X-Ray.Content | MIT AND Apache-2.0 (a few files derive from Apache-2.0-only Rust crates) |
 | X-Ray.Office | MPL-2.0 (derived from LibreOffice) |
-| X-Ray.Psd, X-Ray.Psd.Skia, X-Ray.Psd.Text, X-Ray.Email, X-Ray.PS, X-Ray.OneNote | MIT |
+| X-Ray.Psd, X-Ray.Psd.Skia, X-Ray.Psd.Text, X-Ray.Email, X-Ray.Ics, X-Ray.PS.Skia, X-Ray.OneNote | MIT |
+| X-Ray.PS | MIT AND OFL-1.1 AND Bitstream-Vera (it bundles Liberation Serif under OFL-1.1 and DjVu Dingbats under the Bitstream Vera licence) |
 | X-Ray (umbrella) | MIT AND Apache-2.0 AND MPL-2.0 AND OFL-1.1 AND Bitstream-Vera, covering what it installs |

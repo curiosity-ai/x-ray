@@ -20,6 +20,9 @@ The umbrella package and the individual members, requirements, and which package
 ::: card {variant="grid" icon="list-check" title="Choose a package" link="/getting-started/choosing-a-package"}
 Which package to use for a task or a file type, and when to combine two.
 :::
+::: card {variant="grid" icon="hourglass-end" title="Cancellation and streaming" link="/getting-started/cancellation-and-streaming"}
+How every package takes a `CancellationToken`, reports cancellation and writes large results to streams.
+:::
 ::::
 
 ## A first extraction

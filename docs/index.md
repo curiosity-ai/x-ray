@@ -7,7 +7,7 @@ layout: default
 
 [!hero
     title="X-Ray"
-    subtitle="Pure C# NuGet packages for .NET 10: extract content from documents for search and LLMs, render office documents to PDF and images, and read Photoshop, email, PostScript/XPS and OneNote files, without installing an office suite or any other application."
+    subtitle="Pure C# NuGet packages for .NET 10: extract content from documents for search and LLMs, render office documents to PDF and images, and read Photoshop, email, iCalendar, PostScript/XPS and OneNote files, without installing an office suite or any other application."
     badge-text="X-Ray on NuGet"
     badge-link="https://www.nuget.org/packages/X-Ray/"
     cta1-text="Get started"
@@ -54,15 +54,19 @@ Photoshop PSD and PSB: the layer tree, compositing to PNG or JPEG, and all text.
 :::
 
 ::: card {variant="grid" icon="envelope" title="X-Ray.Email" link="/email/"}
-Outlook `.msg`, `.eml` and Compound File Binary containers: read, create, edit and convert between MSG and EML.
+Outlook `.msg`, `.eml` and Compound File Binary containers: read, create, edit and convert between MSG and EML, with an HTML preview and attachments as files.
+:::
+
+::: card {variant="grid" icon="calendar" title="X-Ray.Ics" link="/ics/"}
+iCalendar and vCalendar files: events, to-dos, time zones, recurrence expansion, extraction of an appointment to HTML, text and Markdown, and a writer.
 :::
 
 ::: card {variant="grid" icon="file-eps" title="X-Ray.PS" link="/ps/"}
-PostScript, EPS and XPS documents: read them and convert them to PDF or raster images.
+PostScript, EPS and XPS documents: read them and convert them to PDF or raster images, with limits for hostile input and an optional Skia raster writer.
 :::
 
 ::: card {variant="grid" icon="notebook" title="X-Ray.OneNote" link="/onenote/"}
-OneNote `.one` files: pages, rich text, images, attachments and tables, and export to PDF.
+OneNote `.one` files: pages, rich text, images, attachments and tables, and export to PDF and HTML.
 :::
 
 ::::
@@ -75,7 +79,7 @@ OneNote `.one` files: pages, rich text, images, attachments and tables, and expo
 |---|---|---|
 | [X-Ray.Content](/content/) | "What does this document say?" | Text and markup, metadata, tables, an element tree |
 | [X-Ray.Office](/office/) | "What does this document look like?" | PDF pages and raster images |
-| [X-Ray.Psd](/psd/), [X-Ray.Email](/email/), [X-Ray.PS](/ps/), [X-Ray.OneNote](/onenote/) | "Give me the object model of this one format." | A typed document model, plus rendering or conversion where the format has one |
+| [X-Ray.Psd](/psd/), [X-Ray.Email](/email/), [X-Ray.Ics](/ics/), [X-Ray.PS](/ps/), [X-Ray.OneNote](/onenote/) | "Give me the object model of this one format." | A typed document model, plus rendering or conversion where the format has one |
 
 X-Ray.Content is the broad one: it covers many formats at the level a search index or a
 language model needs. The format packages go deep on one family of files each, with a full
@@ -94,6 +98,9 @@ Install the umbrella or a single member, and check the requirements.
 :::
 ::: card {variant="grid" gradient="true" icon="list-check" title="Choose a package" link="/getting-started/choosing-a-package"}
 Which package to reach for, by task and by file type.
+:::
+::: card {variant="grid" gradient="true" icon="hourglass-end" title="Cancellation and streaming" link="/getting-started/cancellation-and-streaming"}
+The convention every package follows for tokens, `OperationCanceledException` and stream outputs.
 :::
 ::: card {variant="grid" gradient="true" icon="code-branch" title="Contributing" link="/contributing/"}
 How the repositories are laid out, how packages are versioned and published, and how to work on these docs.

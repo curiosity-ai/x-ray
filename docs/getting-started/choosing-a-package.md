@@ -17,7 +17,9 @@ order: 3
 | Composite a Photoshop file, export its layers, or read its type layers | [X-Ray.Psd](/psd/) |
 | Read, create or edit an Outlook message, or convert MSG to EML | [X-Ray.Email](/email/) |
 | Convert PostScript, EPS or XPS to PDF or images | [X-Ray.PS](/ps/) |
-| Read OneNote pages or export them to PDF | [X-Ray.OneNote](/onenote/) |
+| Read OneNote pages or export them to PDF or HTML | [X-Ray.OneNote](/onenote/) |
+| Read an invitation: organizer, attendees, recurrence, attachments; or write an `.ics` file | [X-Ray.Ics](/ics/) |
+| Convert a message to an HTML preview, or save its attachments as files | [X-Ray.Email](/email/) |
 | Read text from scanned pages or from images inside documents | [X-Ray.Content](/content/) with OCR enabled |
 
 ## By file type
@@ -28,14 +30,19 @@ Several formats are read by more than one package, at different depths:
 |---|---|---|
 | docx, xlsx, pptx, doc, xls, ppt, odt, ods, odp, rtf | Text, Markdown, tables, metadata | [X-Ray.Office](/office/): layout and rendering |
 | PDF | Text, geometry, tables, form fields, bookmarks | (none; X-Ray.Office and X-Ray.PS write PDF) |
-| eml, msg | Body, headers and attachment list | [X-Ray.Email](/email/): the full MAPI model, writing |
+| eml, msg | Body, headers and attachment list | [X-Ray.Email](/email/): the full MAPI model, HTML preview, attachments as files, writing |
 | psd, psb | Layer tree as headings, type-layer text, metadata (read through X-Ray.Psd) | [X-Ray.Psd](/psd/): compositing, pixels, the full layer model |
+| ics (iCalendar, vCalendar 1.0) | Not read | [X-Ray.Ics](/ics/): events, recurrence, attendees, writing |
 | ps, eps, xps | Not read | [X-Ray.PS](/ps/) |
-| one | Not read | [X-Ray.OneNote](/onenote/) |
+| one, onetoc2 | Not read | [X-Ray.OneNote](/onenote/) |
 | html, markdown, epub, csv, json, xml, archives and 70+ more | Read | (none) |
 
 The rule of thumb: X-Ray.Content when you want what a document **says**, the format package
 when you want what it **is** (its object model) or what it **looks like** (rendering).
+
+A format that more than one package reads is read independently by each, so the choice is about
+what you need out of it. For protection against hostile or runaway input, see
+[Cancellation and streaming](/getting-started/cancellation-and-streaming).
 
 ## Combining packages
 

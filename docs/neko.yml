@@ -43,7 +43,11 @@ links:
       - text: "X-Ray.Email"
         link: /email/
         icon: envelope
-        description: "Outlook MSG, EML and CFB containers."
+        description: "Outlook MSG, EML and CFB: read, convert, HTML preview."
+      - text: "X-Ray.Ics"
+        link: /ics/
+        icon: calendar
+        description: "iCalendar and vCalendar: events, recurrence, attendees, writer."
       - text: "X-Ray.PS"
         link: /ps/
         icon: file-eps
@@ -51,7 +55,7 @@ links:
       - text: "X-Ray.OneNote"
         link: /onenote/
         icon: notebook
-        description: "OneNote .one pages, text and PDF export."
+        description: "OneNote .one pages, text, PDF and HTML export."
   - text: "Contributing"
     icon: code-branch
     link: /contributing/
@@ -70,7 +74,7 @@ footer:
 
 meta:
   title: " | X-Ray"
-  description: "Documentation for X-Ray: pure C# .NET packages for content extraction, rendering documents to PDF and images, and reading PSD, email, PostScript/XPS and OneNote files."
+  description: "Documentation for X-Ray: pure C# .NET packages for content extraction, rendering documents to PDF and images, and reading PSD, email, iCalendar, PostScript/XPS and OneNote files."
 
 breadcrumb:
   home: ":icon-house-chimney:"

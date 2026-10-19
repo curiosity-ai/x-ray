@@ -40,7 +40,7 @@ behaviour question can be answered from the original source.
 
 ## Publishing order
 
-Members publish first, each from its own pipeline. The umbrella publishes after them: its
+Members publish first, each repository from its own pipeline. The umbrella publishes after them: its
 pipeline asks nuget.org for the newest version of every member and pins those. Re-run the
 umbrella's pipeline after a member ships to carry the new version into `X-Ray`.
 
