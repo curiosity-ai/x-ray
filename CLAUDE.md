@@ -153,9 +153,11 @@ Built with **Neko** (a .NET global tool, `dotnet tool update --global Neko`; the
   `index.md`.
 - Build: `./build.sh` or `build.bat` (`neko build -i docs -o .build`). Check links with
   `Neko check-links -i docs` before committing; it must report no broken links.
-- Publish: `.devops/build-docs.yml` builds on `main` (path filter `docs/*`) and force-pushes
-  `.build/` to `gh-pages` with `.nojekyll`, using the `$(username)`, `$(pat)`, `$(email)`
-  pipeline variables.
+- Publish: `.github/workflows/docs.yml` (GitHub Actions, not Azure DevOps; the same shape as
+  curiosity-ai/website's) builds on `main` (path filter `docs/**`, `build.sh`, the workflow) and
+  force-pushes `.build/` to `gh-pages` with `.nojekyll`, using the workflow's own `GITHUB_TOKEN`.
+  Only SHA-pinned `actions/*` steps are allowed by the organisation's policy; the rest is shell.
+  The package pipelines stay on Azure DevOps (`.devops/`).
 - Code samples must use the package's real API. Mark a page you could not verify with a
   `!!! warning Stub` block rather than guessing.
 - Tone: reference docs, not marketing. No hype words, no em dashes in prose. See the
@@ -167,7 +169,8 @@ Built with **Neko** (a .NET global tool, `dotnet tool update --global Neko`; the
 src/XRay/                 XRay.csproj, Members.props, README.md (the package README)
 docs/                     Neko site
 assets/logo.png           family icon (also docs/assets/logo.png)
-.devops/                  build-x-ray-nuget.yml, resolve-member-versions.ps1, build-docs.yml
+.devops/                  build-x-ray-nuget.yml, resolve-member-versions.ps1 (Azure DevOps, the umbrella)
+.github/workflows/        docs.yml (GitHub Actions, the docs site)
 .claude/skills/           add-family-member, publish-packages, test-documents, docs-site
 Directory.Build.props     shared metadata and icon packing
 build.sh, build.bat       docs build

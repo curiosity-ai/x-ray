@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Builds the documentation site in docs/ into .build/ with Neko. Used locally; the docs pipeline
-# (.devops/build-docs.yml) runs build.bat, which does the same on Windows.
+# Builds the documentation site in docs/ into .build/ with Neko. Used locally; the docs workflow
+# (.github/workflows/docs.yml) runs it on GitHub Actions; build.bat does the same on Windows.
 #   Install the tool once with: dotnet tool update --global Neko
 set -euo pipefail
 export PATH="$PATH:$HOME/.dotnet/tools"

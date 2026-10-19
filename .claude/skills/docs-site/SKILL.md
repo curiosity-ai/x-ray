@@ -80,10 +80,13 @@ Folders: `index.yml` with `label`, `icon`, `order` (and `expanded: true` to open
 
 ## Publishing
 
-`.devops/build-docs.yml` runs on pushes to `main` that touch `docs/`, `build.bat` or itself:
-`dotnet tool update Neko --global`, `build.bat`, then it turns `.build/` into a fresh git repo,
-adds `.nojekyll`, and force-pushes it to `gh-pages` of curiosity-ai/x-ray with the `$(username)`,
-`$(pat)` and `$(email)` pipeline variables.
+`.github/workflows/docs.yml` (GitHub Actions, modelled on curiosity-ai/website's `pages.yml`)
+runs on pushes to `main` that touch `docs/`, `build.sh` or itself: it sets up .NET 10, runs
+`dotnet tool update Neko --global`, `./build.sh` and `Neko check-links -i docs`, then turns `.build/`
+into a fresh git repo, adds `.nojekyll`, and force-pushes it to `gh-pages` of curiosity-ai/x-ray
+with the workflow's own `GITHUB_TOKEN` (`permissions: contents: write`; no personal access token
+or pipeline variables). The organisation allows only SHA-pinned `actions/*` actions, so every
+other step is shell; re-pin by resolving the tag with `git ls-remote --tags --refs`.
 
 The site is served at `xray.curiosity.ai`, not `curiosity-ai.github.io/x-ray/`: Neko writes
 root-relative URLs and has no base-path setting, so it needs a hostname of its own. Neko writes

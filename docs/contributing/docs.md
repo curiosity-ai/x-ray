@@ -68,6 +68,7 @@ page). Pages carry front matter with `label`, `icon` and `order`. Icons are
 
 ## Publishing
 
-`.devops/build-docs.yml` runs on every push to `main` that touches `docs/`. It installs Neko,
-builds the site, and force-pushes the output to the `gh-pages` branch, which GitHub Pages
-serves at `xray.curiosity.ai`.
+`.github/workflows/docs.yml` (GitHub Actions) runs on every push to `main` that touches `docs/`.
+It installs Neko, builds the site, checks links, and force-pushes the output to the `gh-pages`
+branch, which GitHub Pages serves at `xray.curiosity.ai`. The package pipelines remain on Azure
+DevOps.

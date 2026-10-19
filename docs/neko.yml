@@ -2,7 +2,7 @@ input: .
 output: .neko
 
 # Served by GitHub Pages from the gh-pages branch of curiosity-ai/x-ray (see
-# .devops/build-docs.yml), on its own hostname. Neko writes every link root-relative
+# .github/workflows/docs.yml), on its own hostname. Neko writes every link root-relative
 # (/assets/..., /content/) and has no base-path setting, so the site cannot live under the
 # /x-ray/ path of curiosity-ai.github.io: it needs a host of its own, the same way
 # docs.curiosity.ai is served. Neko writes `url`'s host into the CNAME file of the output,
