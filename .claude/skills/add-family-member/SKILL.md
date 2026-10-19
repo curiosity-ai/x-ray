@@ -99,8 +99,9 @@ Each repository has the pipeline that publishes its packages, and a new package 
 
 For a repository with no pipeline yet, copy `curiosity-ai/x-ray-content/.devops/build-x-ray-nuget.yml`:
 `windows-latest`, a PowerShell step computing CalVer `yy.M.<buildId % 65536>` into `targetVersion`,
-`UseDotNet@2` 10.x, restore/build/pack with `/p:Version=$(targetVersion)`, and `NuGetCommand@2` push
-with `publishFeedCredentials: 'nuget-curiosity-org'`. Three things that failed once and are easy to
+`UseDotNet@2` 10.x, restore/build/pack with `/p:Version=$(targetVersion)`, and a push step per package
+(`templates/push-nuget.yml`: `NuGetCommand@2`, `publishFeedCredentials: 'nuget-curiosity-org'`,
+`allowPackageConflicts: true`; list the new package's id in the template's `packages`). Three things that failed once and are easy to
 repeat:
 
 - **`NuGetToolInstaller@1` with `versionSpec: '>=7.6.0'` before the push.** The service connection
