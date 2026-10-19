@@ -13,12 +13,6 @@ Impress), developed against headless LibreOffice as the reference: a rendered pa
 with LibreOffice's rendering of the same file. It needs no LibreOffice process, office install
 or COM interop.
 
-!!! warning Stub
-This page is a first outline. The package was developed under the working name Paperless and
-has just been renamed; the examples use the renamed API (`OfficeDocument`, `XRay.Office.*`
-namespaces). Check the repository README if a name does not resolve.
-!!!
-
 [!ref icon="brands-github" target="blank" text="curiosity-ai/x-ray-office"](https://github.com/curiosity-ai/x-ray-office)
 [!ref icon="box-open" target="blank" text="X-Ray.Office on NuGet"](https://www.nuget.org/packages/X-Ray.Office/)
 
@@ -54,9 +48,11 @@ Extract the content, without layout or fonts:
 ```csharp
 using XRay.Office;
 using XRay.Office.Core.Extraction;
+using XRay.Office.Markup;
 
 ContentDocument content = OfficeDocument.Extract("report.docx");
 string text = content.GetText();
+string markdown = MarkdownWriter.ToMarkdown(content);
 ```
 
 Render: open the document, lay it out (a separate, deferred step), then draw pages:
@@ -71,8 +67,10 @@ using IDocument doc = OfficeDocument.Open("deck.pptx");
 IPageSequence pages = ((IPaginatedDocument)doc).Layout();
 
 // One page to PNG.
-new RasterRenderer(new RasterRenderOptions { Dpi = 150 })
-    .RenderToPng(pages[0], File.Create("slide1.png"));
+using (var png = File.Create("slide1.png"))
+{
+    new RasterRenderer(new RasterRenderOptions { Dpi = 150 }).RenderToPng(pages[0], png);
+}
 
 // Every page to PDF.
 using var pdf = File.Create("deck.pdf");
@@ -83,6 +81,8 @@ A workbook can also be written as HTML, one table per sheet, in the shape Calc's
 filter writes:
 
 ```csharp
+using XRay.Office;
+using XRay.Office.Core.Documents;
 using XRay.Office.Spreadsheets.Html;
 using XRay.Office.Spreadsheets.Layout;
 
@@ -94,8 +94,26 @@ SheetHtmlWriter.Write(sheets, File.Create("report.html"));
 To check what a file is without reading it, `Identify` reads only the container header:
 
 ```csharp
-FormatIdentification format = OfficeDocument.Identify("unknown.bin");   // XRay.Office.Core.Formats
+using XRay.Office;
+using XRay.Office.Core.Formats;
+
+FormatIdentification format = OfficeDocument.Identify("unknown.bin");
+Console.WriteLine(format.IsEncrypted);
 ```
+
+## More in this section
+
+:::: card-grid
+::: card {variant="grid" icon="hourglass-end" title="Cancellation and limits" link="/office/cancellation-and-limits"}
+Tokens, `LayoutOptions.Timeout`, `MaxPages`, `MaxImagePixels`, and streamed output.
+:::
+::: card {variant="grid" icon="file-pdf" title="PDF output" link="/office/pdf-output"}
+Metadata, links, bookmarks, the outline, page labels and `PdfRenderOptions`.
+:::
+::: card {variant="grid" icon="check-circle" title="Fidelity and gaps" link="/office/fidelity"}
+How close the rendering is to LibreOffice's, what is measured, and the encryption gap.
+:::
+::::
 
 ## X-Ray.Office or X-Ray.Content?
 
