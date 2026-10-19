@@ -65,7 +65,7 @@ One call into a library that has no token runs to its end, and the latency of a 
 is that one call. These are:
 
 - `System.Text.Json` parsing a single large JSON document.
-- ImageSharp decoding one image.
+- SkiaSharp decoding one image.
 - The `X-Ray.Psd` `Load` and `ExtractText` calls, until that package ships token overloads. The
   Photoshop extractor checks the token between layers and before each stage.
 - PDFium rasterising one page, in the OCR pass.

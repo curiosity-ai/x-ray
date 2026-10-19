@@ -78,7 +78,7 @@ Two details differ:
 
 A token is polled by the library's own loops. One call into a library that has no token runs to its
 end. Each package page says which calls these are. For X-Ray.Content they are a single
-`System.Text.Json` parse of one large document, ImageSharp decoding one image, `X-Ray.Psd`'s `Load`
+`System.Text.Json` parse of one large document, SkiaSharp decoding one image, `X-Ray.Psd`'s `Load`
 and `ExtractText`, and PDFium rasterising one page. For X-Ray.PS they are the Type 1 font resource
 patterns, the XML parser for one part and the CLR's own zlib.
 
