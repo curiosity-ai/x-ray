@@ -1,0 +1,77 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- The X-Ray family's umbrella package. It carries no code of its own: installing it pulls
+       in every X-Ray package, so a consumer who wants the whole family writes one line instead
+       of tracking the list. Each member also stays installable on its own.
+
+       The members live in other repositories and are published by their own pipelines, so they
+       are PackageReferences, not ProjectReferences. The list and the property each version comes
+       from are in Members.props; .devops/build-x-ray-nuget.yml fills those properties with the
+       newest version of each member on nuget.org. -->
+
+  <Import Project="Members.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>XRay</RootNamespace>
+    <AssemblyName>XRay</AssemblyName>
+
+    <!-- NuGet package metadata. Authors, icon and repository come from Directory.Build.props. -->
+    <PackageId>X-Ray</PackageId>
+    <Description>The umbrella package for the X-Ray family of .NET libraries. Carries no code of its own: installing it brings in every X-Ray package, for content extraction (X-Ray.Content), rendering office documents to PDF and images (X-Ray.Office), and reading Photoshop (X-Ray.Psd), email (X-Ray.Email), iCalendar (X-Ray.Ics), PostScript and XPS (X-Ray.PS) and OneNote (X-Ray.OneNote) files. Install a single member directly if you only need one.</Description>
+    <!-- A metapackage's expression has to cover what it installs, not what it contains (nothing).
+         X-Ray.Content is MIT AND Apache-2.0 (some files derive from Apache-2.0-only Rust crates),
+         X-Ray.Office is MPL-2.0 (it derives from LibreOffice), and its X-Ray.Office.Text member adds
+         OFL-1.1 and Apache-2.0 for the fonts it bundles; X-Ray.PS is MIT AND OFL-1.1 for the same
+         reason. The Bitstream Vera licence of the DejaVu and DjVu fonts is not in any expression, because
+         nuget.org accepts only OSI or FSF approved ids and rejects Bitstream-Vera; the other members, X-Ray.Ics among them, are MIT. -->
+    <PackageLicenseExpression>MIT AND Apache-2.0 AND MPL-2.0 AND OFL-1.1</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageTags>x-ray;metapackage;document;extraction;content;office;pdf;psd;email;ics;icalendar;postscript;xps;onenote</PackageTags>
+    <IsPackable>true</IsPackable>
+
+    <!-- A metapackage ships dependencies, not assemblies. `IncludeBuildOutput=false` drops the
+         (empty) XRay.dll, and NU5128 is the warning NuGet raises for a package that declares a
+         dependency group without a matching lib/ folder, which is exactly what this is. The
+         dependencies themselves must NOT be suppressed; they are the entire payload. -->
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <IncludeSymbols>false</IncludeSymbols>
+    <SuppressDependenciesWhenPacking>false</SuppressDependenciesWhenPacking>
+    <NoWarn>$(NoWarn);NU5128</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="/" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Members with no version are the ones not resolved (not published yet, or not passed on
+         the command line). They are left out rather than written as an unversioned dependency,
+         which NuGet would resolve to the lowest version available, or fail on. -->
+    <_XRayUnresolvedMember Include="@(XRayMember->WithMetadataValue('Version', ''))" />
+    <!-- PrivateAssets="none": by default a dependency's build and analyzer assets are excluded
+         from what flows to the consumer (exclude="Build,Analyzers" in the nuspec). A metapackage
+         should hand on exactly what installing the member directly would, so nothing is held back. -->
+    <PackageReference Include="@(XRayMember)" Exclude="@(_XRayUnresolvedMember)" PrivateAssets="none" />
+  </ItemGroup>
+
+  <!-- Say which members were left out, before anything is restored. Restore runs this too, so
+       a pipeline log shows the warning next to the dependency list it explains. -->
+  <Target Name="XRayReportMembers" BeforeTargets="CollectPackageReferences">
+    <Warning Condition="'@(_XRayUnresolvedMember)' != ''"
+             Code="XRAY001"
+             Text="X-Ray umbrella: no version for %(_XRayUnresolvedMember.Identity), so it is left out of the package. Pass its version property (see src/XRay/Members.props), or run .devops/resolve-member-versions.ps1." />
+    <Error Condition="'$(XRayRequireAllMembers)' == 'true' and '@(_XRayUnresolvedMember)' != ''"
+           Code="XRAY002"
+           Text="X-Ray umbrella: XRayRequireAllMembers is true and these members have no version: @(_XRayUnresolvedMember)." />
+  </Target>
+
+  <!-- A build with no versions is fine (it is what a fresh clone does); a package with no
+       dependencies is not, since it would install nothing. -->
+  <Target Name="XRayRequireAMember" BeforeTargets="GenerateNuspec">
+    <Error Condition="'@(XRayMember)' != '' and '@(_XRayUnresolvedMember)' == '@(XRayMember)'"
+           Code="XRAY003"
+           Text="X-Ray umbrella: no member has a version, so the package would install nothing. Pass at least one version property (see src/XRay/Members.props)." />
+  </Target>
+
+</Project>

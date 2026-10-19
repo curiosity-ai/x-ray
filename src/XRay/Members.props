@@ -1,0 +1,38 @@
+<Project>
+
+  <!-- The X-Ray family: every package the umbrella installs, one line each. This is the only
+       list. XRay.csproj turns it into PackageReferences, and .devops/resolve-member-versions.ps1
+       reads this file to learn which ids to look up on nuget.org and which property each
+       version goes into.
+
+       Each member is a package id plus the MSBuild property that carries its version:
+
+         <XRayMember Include="<package id>" Version="$(<property>)" />
+
+       The property is normally set on the command line by the pipeline
+       (`-p:XRayContentVersion=26.9.5114`), from the newest version nuget.org lists for that id.
+       A member whose property is empty is left out of the package with a warning, which is how
+       the umbrella ships before every member has been published. See the "Members" section of
+       CLAUDE.md for the reasoning and for how to require all of them instead.
+
+       Adding a member: one line here, a row in README.md and src/XRay/README.md, and a docs
+       page. Nothing else; the pipeline picks the new line up on its next run.
+
+       List a member's facade or root package, not its internals: X-Ray.Office brings the
+       X-Ray.Office.* libraries it depends on. List an optional extra (X-Ray.Psd.Skia) when it is
+       a separate install a consumer would otherwise have to know about. -->
+
+  <ItemGroup>
+    <XRayMember Include="X-Ray.Content"  Version="$(XRayContentVersion)" />
+    <XRayMember Include="X-Ray.Office"   Version="$(XRayOfficeVersion)" />
+    <XRayMember Include="X-Ray.Psd"      Version="$(XRayPsdVersion)" />
+    <XRayMember Include="X-Ray.Psd.Skia" Version="$(XRayPsdSkiaVersion)" />
+    <XRayMember Include="X-Ray.Psd.Text" Version="$(XRayPsdTextVersion)" />
+    <XRayMember Include="X-Ray.Email"    Version="$(XRayEmailVersion)" />
+    <XRayMember Include="X-Ray.Ics"      Version="$(XRayIcsVersion)" />
+    <XRayMember Include="X-Ray.PS"       Version="$(XRayPSVersion)" />
+    <XRayMember Include="X-Ray.PS.Skia"  Version="$(XRayPSSkiaVersion)" />
+    <XRayMember Include="X-Ray.OneNote"  Version="$(XRayOneNoteVersion)" />
+  </ItemGroup>
+
+</Project>
