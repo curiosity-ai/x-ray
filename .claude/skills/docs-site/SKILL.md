@@ -1,91 +1,62 @@
 ---
 name: docs-site
-description: Add or update a page of the X-Ray documentation site (docs/ in curiosity-ai/x-ray), built with Neko and published to xray.curiosity.ai through gh-pages. Use when documenting a package, adding a section for a new family member, fixing a docs page, changing the site's navigation or branding, or when the docs build or link check fails.
+description: Add or update a page of the X-Ray documentation, which lives in the x-ray/ folder of curiosity-ai/documentation (built with Neko, published at docs.curiosity.ai/x-ray). Use when documenting a package, adding a section for a new family member, fixing a docs page, after changing a package's API or behavior, or when the docs build or link check fails.
 ---
 
-# The X-Ray docs site
+# The X-Ray docs
 
-`docs/` is one Neko project. `docs/neko.yml` configures it; every `.md` is a page; every folder
-is a sidebar section configured by its `index.yml`.
+The docs are **not in this repository**. They are the `x-ray/` folder of
+[curiosity-ai/documentation](https://github.com/curiosity-ai/documentation) (clone it with
+`add_repo` in an agent session; it lands at `/home/user/documentation`), one Neko project among
+the others in that repository, published at <https://docs.curiosity.ai/x-ray/>. Nothing in the
+X-Ray repositories builds or publishes docs.
 
-## Setup
+## When a docs change is required
+
+A change to a package's public API, options, defaults, behavior, limits, licence, install steps
+or supported formats is not finished until its page is updated. Open the PR against
+`curiosity-ai/documentation` (branch from `main`, never against a source repository or an
+upstream), and link it and the code PR to each other. If no page changes, say so in the code PR.
+
+## Where things are
+
+```
+x-ray/neko.yml                 section config: branding, url (docs.curiosity.ai/x-ray)
+x-ray/index.md                 landing: hero, package cards, how they fit, paths
+x-ray/getting-started/         index, installation, choosing-a-package
+x-ray/<package>/               content, office, psd, email, ics, ps, onenote: index.yml + index.md plus topic pages
+x-ray/contributing/            development notes, working on the docs
+x-ray/assets/logo.png          the family logo
+```
+
+The header's Developers menu in the documentation root `neko.yml` (and every section's copy of it)
+links `/x-ray/`; `open-source.md` has the X-Ray card. A new package gets a folder, a card in
+`x-ray/index.md`, rows in `getting-started/installation.md` and `choosing-a-package.md`.
+
+## Setup, build and check
 
 ```sh
 dotnet tool update --global Neko          # installs when missing
 export PATH="$PATH:$HOME/.dotnet/tools"   # the tool is not on PATH by default
-Neko --version                            # executable is `Neko`; `neko` only where symlinked
+cd /home/user/documentation
+Neko build -i x-ray -o /tmp/x-ray-site    # just this section (links with /x-ray/ prefix will not resolve alone)
+Neko check-links -i .                     # the whole site; the only check that resolves /x-ray/ links
 ```
 
-## Build and check
-
-```sh
-./build.sh                                # neko build -i docs -o .build (build.bat on Windows)
-Neko check-links -i docs                  # must end with "No broken links found"
-Neko watch -i docs                        # live preview at http://localhost:5000
-```
-
-`.build/`, `docs/.neko/` and `docs/.neko-cache/` are build output and gitignored.
-
-## Structure
-
-```
-docs/neko.yml                  branding, header links (one "Packages" dropdown), url, footer
-docs/index.md                  landing: hero, package cards, how they fit, paths
-docs/getting-started/          index, installation, choosing-a-package
-docs/<package>/                content, office, psd, email, ics, ps, onenote: index.yml + index.md plus topic pages
-docs/contributing/             development notes, working on the docs
-docs/assets/logo.png           the family logo (branding logo and favicon)
-```
+The documentation repository's `.claude/CLAUDE.md` is the reference for Neko, its components
+(`.claude/skills/<name>/`) and its tone rules; read it before writing.
 
 ## Writing a page
 
-Front matter on every page:
+Front matter on every page: `label`, `icon` (UIcons regular-rounded name, or `brands-<name>`),
+`order`, optional `tags`. Folders have an `index.yml` with `label`, `icon`, `order`.
 
-```md
----
-label: Output formats      # sidebar text
-icon: file-code            # UIcons regular-rounded name, or brands-<name>
-order: 2                   # lower sorts first within the folder
-tags: [extraction]
----
-
-# Output formats
-```
-
-Folders: `index.yml` with `label`, `icon`, `order` (and `expanded: true` to open by default).
-
-- **Links**: root-relative and extensionless: `/content/`, `/getting-started/installation`.
-  Assets: `/assets/logo.png`. Never `assets/...` without the slash (it resolves per page and
-  breaks), never the full `https://xray.curiosity.ai` for internal links.
-- **Icons** must exist in UIcons, or they render blank. Check a name against the built CSS:
-  `grep -c "fi-rr-<name>:before" .build/assets/uicons-regular-rounded.css`.
-- **Components** used here: `[!hero ...]`, `:::: card-grid` / `::: card {...}`,
-  `!!! warning Title ... !!!`, `+++ Tab ... +++`, `[!ref icon=... text=...](url)`. The full
-  reference for every Neko component is in `curiosity-ai/documentation/.claude/skills/<name>/`
-  (cloned at `/home/user/documentation` in agent sessions).
+- **Links** are root-relative from the site root, extensionless, and carry the section prefix:
+  `/x-ray/content/`, `/x-ray/getting-started/installation`, assets `/x-ray/assets/logo.png`.
+  A link without `/x-ray` leaves the section and breaks.
 - **Code samples come from the real API.** Copy from the package README or tests, or read the
-  source. If you cannot verify a sample, do not guess: write the page without it and add
-  `!!! warning Stub` explaining what is missing.
+  source, and compile them (a scratch console project outside the repository that references the
+  package). If you cannot verify a sample, write the page without it and add `!!! warning Stub`.
 - **Tone**: reference documentation. State what a thing does and does not do. No "powerful",
-  "seamless", "leverage", welcome openers or exclamation marks; no em dashes in prose. The
-  documentation repository's `.claude/CLAUDE.md` ("Tone and voice") has the full list.
-
-## A section for a new package
-
-1. `docs/<name>/index.yml` and `index.md` (overview, install, quick start, licence, when to use
-   it versus X-Ray.Content).
-2. A card in `docs/index.md`, rows in `getting-started/installation.md` and
-   `choosing-a-package.md`, an entry in the "Packages" dropdown of `neko.yml`.
-3. Build, check links, commit.
-
-## Publishing
-
-`.devops/build-docs.yml` runs on pushes to `main` that touch `docs/`, `build.bat` or itself:
-`dotnet tool update Neko --global`, `build.bat`, then it turns `.build/` into a fresh git repo,
-adds `.nojekyll`, and force-pushes it to `gh-pages` of curiosity-ai/x-ray with the `$(username)`,
-`$(pat)` and `$(email)` pipeline variables.
-
-The site is served at `xray.curiosity.ai`, not `curiosity-ai.github.io/x-ray/`: Neko writes
-root-relative URLs and has no base-path setting, so it needs a hostname of its own. Neko writes
-the `CNAME` file from `url:` in `neko.yml`. If you change the hostname, change `url:`, the DNS
-record, and the links in `README.md`, `src/XRay/README.md` and `Directory.Build.props`.
+  "seamless", "leverage", welcome openers or exclamation marks; no em dashes in prose.
+- Do not write a vendor's name that a licence forbids you to repeat; see `CLAUDE.md`.

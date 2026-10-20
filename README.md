@@ -3,7 +3,7 @@
 # X-Ray
 
 [![X-Ray](https://img.shields.io/nuget/v/X-Ray?label=X-Ray&color=5c2d91&logo=nuget&logoColor=white)](https://www.nuget.org/packages/X-Ray/)
-[![Docs](https://img.shields.io/badge/docs-xray.curiosity.ai-007ec6)](https://xray.curiosity.ai/)
+[![Docs](https://img.shields.io/badge/docs-docs.curiosity.ai%2Fx--ray-007ec6)](https://docs.curiosity.ai/x-ray/)
 
 X-Ray is a family of pure C# NuGet packages for .NET 10, from Curiosity GmbH, for working with
 documents: extracting their content for search and LLMs, rendering them to PDF and images, and
@@ -16,7 +16,7 @@ This repository is the family's root. It holds the `X-Ray` umbrella package, the
 documentation site, and the notes and skills shared by everyone working across the family.
 The packages themselves live in the repositories below.
 
-**Documentation: <https://xray.curiosity.ai/>**
+**Documentation: <https://docs.curiosity.ai/x-ray/>**
 
 ## Packages
 
@@ -54,16 +54,17 @@ dotnet add package X-Ray.Psd
 ```
 
 Nothing is lost by referencing a member directly, and it keeps your dependency graph to what
-you use. See [Installation](https://xray.curiosity.ai/getting-started/installation) for the
+you use. See [Installation](https://docs.curiosity.ai/x-ray/getting-started/installation) for the
 requirements and which packages bring native code.
 
 ## How the repositories fit together
 
 ```
-curiosity-ai/x-ray             umbrella package, docs site, shared notes and skills
+curiosity-ai/x-ray             umbrella package, shared notes and skills
 curiosity-ai/x-ray-content     X-Ray.Content            (C# under dotnet/, Rust upstream in .reference/)
 curiosity-ai/x-ray-office      X-Ray.Office[.*]         (C# under dotnet/, inside a LibreOffice tree)
 curiosity-ai/x-ray-others      X-Ray.Psd[.Skia|.Text], X-Ray.Email, X-Ray.Ics, X-Ray.PS[.Skia], X-Ray.OneNote
+curiosity-ai/documentation     all of Curiosity's docs; the family's are in its x-ray/ folder
 curiosity-ai/test_documents    the shared fixture corpus, a git submodule of the repositories above
 ```
 
@@ -80,9 +81,8 @@ curiosity-ai/test_documents    the shared fixture corpus, a git submodule of the
 
 ```
 src/XRay/            the X-Ray umbrella package; Members.props is the list of members
-docs/                the documentation site (Neko), published to xray.curiosity.ai
 assets/logo.png      the family icon, packed into every X-Ray package
-.devops/             the umbrella's NuGet pipeline and the docs pipeline
+.devops/             the umbrella's NuGet pipeline
 .claude/skills/      skills for working across the family
 CLAUDE.md            conventions for everyone (and every agent) working on the family
 ```
@@ -93,14 +93,66 @@ Build the umbrella locally, with the newest published members (needs PowerShell 
 dotnet pack src/XRay -c Release -o artifacts $(pwsh .devops/resolve-member-versions.ps1)
 ```
 
-Build the docs (needs the Neko .NET tool, `dotnet tool update --global Neko`):
-
-```sh
-./build.sh          # or build.bat; writes the site to .build/
-```
+The documentation is not built here: it is the `x-ray/` folder of
+[curiosity-ai/documentation](https://github.com/curiosity-ai/documentation). A change to a
+package's API or behavior is finished when its page there is updated too.
 
 ## License
 
 Each package carries its own license, listed above. The umbrella's license expression,
 `MIT AND Apache-2.0 AND MPL-2.0 AND OFL-1.1`, covers what it installs. The contents of this repository
 (build files, docs) are MIT.
+
+## Acknowledgements
+
+X-Ray stands on open source work. These are the projects that contributed code, behavior or test
+material to the packages, with the licence each package keeps next to the code derived from it.
+
+**Content extraction (X-Ray.Content)**
+
+- [xberg](https://github.com/xberg-io/xberg): the Rust extraction engine X-Ray.Content is a native
+  C# port of, and the Rust crates it builds on (its `THIRD_PARTY_LICENSES.md` lists them).
+- [typst](https://github.com/typst/typst) (`typst-syntax`, `typst-utils`),
+  [mathemascii](https://github.com/nfejzic/mathemascii) and
+  [alemat](https://github.com/nfejzic/alemat): the Apache-2.0 crates whose math parsing is
+  translated into X-Ray.Content, which is why its licence is `MIT AND Apache-2.0`.
+- [rqrr](https://crates.io/crates/rqrr): the QR code detector and decoder X-Ray.Content's scanner
+  is ported from.
+- [PaddleOCR](https://github.com/PaddlePaddle/PaddleOCR) and the PaddleOCR-VL model, through
+  Curiosity's [.NET port](https://github.com/curiosity-ai/PaddleOCR), for the optional OCR pass,
+  with [PDFium](https://pdfium.googlesource.com/pdfium/) and
+  [PDFtoImage](https://github.com/sungaila/PDFtoImage) for page rasterization.
+
+**Rendering (X-Ray.Office)**
+
+- [LibreOffice](https://www.libreoffice.org/): X-Ray.Office is a C# port of its Writer, Calc and
+  Impress readers and layout, and LibreOffice is the reference every rendering is compared with.
+  The code derived from it stays under the MPL-2.0.
+
+**Single-format packages**
+
+- [Patchy](https://github.com/theolivenbaum/Patchy) by Seth A. Robinson and contributors: the
+  PSD engine X-Ray.Psd was ported from.
+- [psd-tools](https://github.com/psd-tools/psd-tools) and
+  [ag-psd](https://github.com/Agamnentzar/ag-psd): PSD test files, under their MIT licences.
+- [onenote.rs](https://github.com/msiemens/onenote.rs): the behavior reference X-Ray.OneNote was
+  reviewed against. No code was taken from it.
+- [icalendar](https://github.com/collective/icalendar) and
+  [dateutil](https://github.com/dateutil/dateutil): the Python libraries X-Ray.Ics output is
+  checked against.
+- X-Ray.Email, X-Ray.PS and X-Ray.OneNote are ports of MIT-licensed open-source libraries, whose
+  licences are kept verbatim in each package's `LICENSE`. X-Ray.PS also follows the documented
+  behavior of [libjpeg](https://libjpeg-turbo.org/), [libtiff](https://libtiff.gitlab.io/libtiff/)
+  and [Pillow](https://python-pillow.org/).
+
+**Libraries and fonts**
+
+- [SkiaSharp](https://github.com/mono/SkiaSharp) and
+  [HarfBuzzSharp](https://github.com/mono/SkiaSharp) for decoding, drawing and text shaping in the
+  packages that need native code.
+- Fonts bundled where a package renders text: Liberation (SIL OFL 1.1), Carlito (SIL OFL 1.1) and
+  DejaVu (Bitstream Vera licence).
+
+The test documents in [curiosity-ai/test_documents](https://github.com/curiosity-ai/test_documents)
+come from upstream xberg's corpus and from the third-party sets credited in each folder's
+`LICENSE` and `README.md`.
