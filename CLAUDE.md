@@ -13,7 +13,7 @@ Keep this file under 15 KB. Procedures belong in `.claude/skills/<name>/SKILL.md
 
 | Repository | Local clone (agent sessions) | Packages | What it is |
 |---|---|---|---|
-| `curiosity-ai/x-ray` | `/home/user/x-ray` | `X-Ray` | This repo: umbrella package, docs site, shared skills. |
+| `curiosity-ai/x-ray` | `/home/user/x-ray` | `X-Ray`, `X-Ray.DocumentExtraction` | This repo: umbrella package, the `Microsoft.Extensions.DocumentExtraction` provider, docs site, shared skills. |
 | `curiosity-ai/x-ray-content` | `/home/user/x-ray-content` | `X-Ray.Content` | Content extraction (text, Markdown, HTML, JSON, metadata, tables, images; 90+ formats). Native C# port of the Rust `xberg` engine; C# in `dotnet/`, Rust upstream verbatim in `.reference/`. |
 | `curiosity-ai/x-ray-office` | `/home/user/x-ray-office` | `X-Ray.Office`, `X-Ray.Office.*` | C# port of LibreOffice's Writer/Calc/Impress readers and layout, rendering doc/docx/xls/xlsx/ppt/pptx/odt/ods/odp/rtf to PDF and images. C# in `dotnet/`; the surrounding LibreOffice tree is reference only, never built. Formerly "Paperless". Default branch `master`. |
 | `curiosity-ai/x-ray-others` | `/home/user/x-ray-others` | `X-Ray.Psd` (+ `.Skia`, `.Text`), `X-Ray.Email`, `X-Ray.Ics`, `X-Ray.PS` (+ `.Skia`), `X-Ray.OneNote` | Single-format packages, one top-level folder each, sharing one build skeleton. |
@@ -166,10 +166,24 @@ Built with **Neko** (a .NET global tool, `dotnet tool update --global Neko`; the
 - Tone: reference docs, not marketing. No hype words, no em dashes in prose. See the
   `docs-site` skill.
 
+## X-Ray.DocumentExtraction (`src/XRay.DocumentExtraction`)
+
+The one package here with code: `XRayDocumentExtractionClient`, a `DocumentExtractionClient` from
+`Microsoft.Extensions.DocumentExtraction.Abstractions` that runs X-Ray.Content and maps its
+document structure tree onto `ExtractionDocument` (`ExtractionDocumentBuilder`). It is a
+**PackageReference** to X-Ray.Content, like the umbrella's members. The abstraction is
+experimental (`EXTEXP0019`, `MEDE0001` suppressed in the csproj) and prerelease, so the package
+is published with a `-preview` suffix by `.devops/build-x-ray-documentextraction-nuget.yml`, and is
+**not** in `Members.props` (the resolver takes stable versions only). Take API names from the
+abstraction's packages, not the blog post: a table cell's constructor takes spans, its position
+comes from the `Cells[row, column]` indexer.
+
 ## Layout of this repository
 
 ```
 src/XRay/                 XRay.csproj, Members.props, README.md (the package README)
+src/XRay.DocumentExtraction/  DocumentExtractionClient over X-Ray.Content (code, unlike the umbrella)
+tests/XRay.DocumentExtraction.Tests/  xUnit v3; dotnet test --project tests/XRay.DocumentExtraction.Tests
 docs/                     Neko site
 assets/logo.png           family icon (also docs/assets/logo.png)
 .devops/                  build-x-ray-nuget.yml, resolve-member-versions.ps1, build-docs.yml

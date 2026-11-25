@@ -33,6 +33,7 @@ The packages themselves live in the repositories below.
 | [`X-Ray.PS`](https://www.nuget.org/packages/X-Ray.PS/) | PostScript, EPS and XPS: reading and conversion to PDF and images. | [x-ray-others](https://github.com/curiosity-ai/x-ray-others) | MIT AND OFL-1.1 (bundled fonts) |
 | [`X-Ray.PS.Skia`](https://www.nuget.org/packages/X-Ray.PS.Skia/) | Optional SkiaSharp raster writer for X-Ray.PS (anti-aliased output, XPS opacity masks). | [x-ray-others](https://github.com/curiosity-ai/x-ray-others) | MIT |
 | [`X-Ray.OneNote`](https://www.nuget.org/packages/X-Ray.OneNote/) | OneNote `.one`: pages, text, images, tables, export to PDF and HTML. | [x-ray-others](https://github.com/curiosity-ai/x-ray-others) | MIT |
+| [`X-Ray.DocumentExtraction`](https://www.nuget.org/packages/X-Ray.DocumentExtraction/) | A `Microsoft.Extensions.DocumentExtraction` provider backed by X-Ray.Content: structured documents from 90+ formats. Preview. | [x-ray](https://github.com/curiosity-ai/x-ray) (this one) | MIT AND Apache-2.0 |
 
 Package ids are hyphenated; assemblies and namespaces are not (`X-Ray.Content` is the
 `XRay.Content` namespace), because a hyphen is not valid in a C# identifier.

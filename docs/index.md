@@ -69,6 +69,10 @@ PostScript, EPS and XPS documents: read them and convert them to PDF or raster i
 OneNote `.one` files: pages, rich text, images, attachments and tables, and export to PDF and HTML.
 :::
 
+::: card {variant="grid" icon="plug" title="X-Ray.DocumentExtraction" link="/documentextraction/"}
+A provider for the Microsoft document extraction abstraction (`DocumentExtractionClient`), backed by X-Ray.Content. Preview.
+:::
+
 ::::
 
 ---

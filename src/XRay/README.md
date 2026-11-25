@@ -31,6 +31,10 @@ dotnet add package X-Ray
 | [`X-Ray.PS.Skia`](https://www.nuget.org/packages/X-Ray.PS.Skia/) | Optional SkiaSharp raster writer for X-Ray.PS. |
 | [`X-Ray.OneNote`](https://www.nuget.org/packages/X-Ray.OneNote/) | OneNote `.one` files: pages, text, images, tables, and export to PDF and HTML. |
 
+`X-Ray.DocumentExtraction`, the provider for `Microsoft.Extensions.DocumentExtraction`, is published as a prerelease package
+because the abstraction is. The umbrella pins stable versions only, so it does not install it; add it
+yourself with `dotnet add package X-Ray.DocumentExtraction --prerelease`.
+
 A member that has not been published yet is not a dependency of this package; it is added by
 the first umbrella release after it ships.
 
