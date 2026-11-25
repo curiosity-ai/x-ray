@@ -52,6 +52,10 @@ links:
         link: /ps/
         icon: file-eps
         description: "PostScript, EPS and XPS to PDF and images."
+      - text: "X-Ray.DocumentExtraction"
+        link: /documentextraction/
+        icon: plug
+        description: "Microsoft document extraction provider backed by X-Ray.Content."
       - text: "X-Ray.OneNote"
         link: /onenote/
         icon: notebook

@@ -18,6 +18,7 @@ order: 3
 | Read, create or edit an Outlook message, or convert MSG to EML | [X-Ray.Email](/email/) |
 | Convert PostScript, EPS or XPS to PDF or images | [X-Ray.PS](/ps/) |
 | Read OneNote pages or export them to PDF or HTML | [X-Ray.OneNote](/onenote/) |
+| Plug X-Ray.Content into code written against `DocumentExtractionClient` | [X-Ray.DocumentExtraction](/documentextraction/) |
 | Read an invitation: organizer, attendees, recurrence, attachments; or write an `.ics` file | [X-Ray.Ics](/ics/) |
 | Convert a message to an HTML preview, or save its attachments as files | [X-Ray.Email](/email/) |
 | Read text from scanned pages or from images inside documents | [X-Ray.Content](/content/) with OCR enabled |

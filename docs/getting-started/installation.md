@@ -48,6 +48,7 @@ dotnet add package X-Ray.Ics        # iCalendar and vCalendar: events, recurrenc
 dotnet add package X-Ray.PS         # PostScript, EPS, XPS
 dotnet add package X-Ray.PS.Skia    # optional: SkiaSharp raster output for X-Ray.PS
 dotnet add package X-Ray.OneNote    # OneNote .one
+dotnet add package X-Ray.DocumentExtraction --prerelease   # Microsoft.Extensions.DocumentExtraction provider (not in the umbrella)
 ```
 
 Nothing is lost by referencing a member directly. Two reasons to prefer it:
@@ -73,6 +74,7 @@ in a C# identifier:
 | `X-Ray.Ics` | `XRay.Ics` |
 | `X-Ray.PS`, `X-Ray.PS.Skia` | `XRay.PS`, `XRay.PS.Skia` |
 | `X-Ray.OneNote` | `XRay.OneNote` |
+| `X-Ray.DocumentExtraction` | `XRay.DocumentExtraction` |
 
 ## Native dependencies
 
@@ -102,5 +104,6 @@ prerelease suffixes; a higher version is a newer build.
 | X-Ray.Content | MIT AND Apache-2.0 (a few files derive from Apache-2.0-only Rust crates) |
 | X-Ray.Office | MPL-2.0 (derived from LibreOffice) |
 | X-Ray.Psd, X-Ray.Psd.Skia, X-Ray.Psd.Text, X-Ray.Email, X-Ray.Ics, X-Ray.PS.Skia, X-Ray.OneNote | MIT |
+| X-Ray.DocumentExtraction (not in the umbrella) | MIT AND Apache-2.0 |
 | X-Ray.PS | MIT AND OFL-1.1 (it bundles Liberation Serif under OFL-1.1 and DjVu Dingbats under the Bitstream Vera licence) |
 | X-Ray (umbrella) | MIT AND Apache-2.0 AND MPL-2.0 AND OFL-1.1, covering what it installs |

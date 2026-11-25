@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- X-Ray.DocumentExtraction: a DocumentExtractionClient (Microsoft.Extensions.DocumentExtraction)
+       backed by X-Ray.Content. Unlike the umbrella it carries code. X-Ray.Content is a
+       PackageReference, as every family member is in this repository. -->
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>XRay.DocumentExtraction</RootNamespace>
+    <AssemblyName>XRay.DocumentExtraction</AssemblyName>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <!-- The abstraction is marked experimental (MEDE0001, EXTEXP0019); this package is its provider, so it opts in. -->
+    <NoWarn>$(NoWarn);MEDE0001;EXTEXP0019</NoWarn>
+
+    <PackageId>X-Ray.DocumentExtraction</PackageId>
+    <Description>A Microsoft.Extensions.DocumentExtraction provider for the X-Ray family: extracts structured documents (sections, headings, text, tables, images, page references) from 90+ formats with X-Ray.Content, in pure managed code. Preview, like the abstraction it implements.</Description>
+    <PackageTags>x-ray;document;extraction;documentextraction;microsoft-extensions;ai;ingestion;rag</PackageTags>
+    <!-- X-Ray.Content is MIT AND Apache-2.0; this package's own code is MIT. -->
+    <PackageLicenseExpression>MIT AND Apache-2.0</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <IsPackable>true</IsPackable>
+    <IncludeSymbols>false</IncludeSymbols>
+    <DebugType>embedded</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <XRayContentVersion Condition="'$(XRayContentVersion)' == ''">26.10.7292</XRayContentVersion>
+    <DocumentExtractionVersion Condition="'$(DocumentExtractionVersion)' == ''">11.0.1-preview.1.26570.2</DocumentExtractionVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="/" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="X-Ray.Content" Version="$(XRayContentVersion)" />
+    <PackageReference Include="Microsoft.Extensions.DocumentExtraction.Abstractions" Version="$(DocumentExtractionVersion)" />
+  </ItemGroup>
+
+</Project>

@@ -34,7 +34,7 @@ trigger:
     - main
   paths:
     include:
-    - src/*
+    - src/XRay/*
     - assets/*
     - Directory.Build.props
     - global.json

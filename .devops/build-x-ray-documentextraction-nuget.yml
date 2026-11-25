@@ -1,0 +1,82 @@
+# Publishes X-Ray.DocumentExtraction, the provider for Microsoft.Extensions.DocumentExtraction, to
+# nuget.org. Same shape as the family's other pipelines: CalVer off the build id, build (which also
+# packs), then one push through the shared `nuget-curiosity-org` service connection.
+#
+# The abstraction it implements is a prerelease, and nuget.org refuses a stable package that
+# depends on one, so the version carries a `-preview` suffix. The umbrella's resolver takes only
+# stable versions, which is why X-Ray does not install this package.
+variables:
+  project: './src/XRay.DocumentExtraction/XRay.DocumentExtraction.csproj'
+  tests: './tests/XRay.DocumentExtraction.Tests/XRay.DocumentExtraction.Tests.csproj'
+  buildConfiguration: 'Release'
+  targetVersion: yy.M.$(build.buildId)-preview
+
+trigger:
+  branches:
+    include:
+    - main
+  paths:
+    include:
+    - src/XRay.DocumentExtraction/*
+    - tests/XRay.DocumentExtraction.Tests/*
+    - assets/*
+    - Directory.Build.props
+    - global.json
+    - .devops/build-x-ray-documentextraction-nuget.yml
+
+pr: none
+
+pool:
+  vmImage: 'windows-latest'
+
+steps:
+- task: PowerShell@2
+  displayName: 'Create CalVer Version'
+  inputs:
+    targetType: 'inline'
+    script: |
+      $dottedDate = (Get-Date).ToString("yy.M")
+      $buildID = $($env:BUILD_BUILDID)
+      $modBuildID = [int]$buildID % 65536  # ensure fits in int16
+      $newTargetVersion = "$dottedDate.$modBuildID-preview"
+      Write-Host "##vso[task.setvariable variable=targetVersion;]$newTargetVersion"
+      Write-Host "Updated targetVersion to '$newTargetVersion'"
+
+- task: UseDotNet@2
+  displayName: 'Use .NET 10.0 SDK'
+  inputs:
+    packageType: sdk
+    version: 10.x
+    includePreviewVersions: false
+    installationPath: $(Agent.ToolsDirectory)\dotnet
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'restore'
+    projects: '$(project);$(tests)'
+  displayName: 'restore nuget'
+
+# The build writes the package, so no separate pack step has to name the project.
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'build'
+    projects: '$(project)'
+    arguments: '-c $(buildConfiguration) --no-restore /p:Version=$(targetVersion) /p:LangVersion=latest /p:GeneratePackageOnBuild=true'
+  displayName: 'build and pack'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'test'
+    projects: '$(tests)'
+    arguments: '-c $(buildConfiguration)'
+  displayName: 'test'
+
+# No NuGetToolInstaller step (nuget.exe 6.4 refuses the API key service connection) and no
+# symbol packages: DebugType is embedded.
+- task: NuGetCommand@2
+  displayName: 'push nuget'
+  inputs:
+    command: 'push'
+    packagesToPush: '$(Build.SourcesDirectory)/src/XRay.DocumentExtraction/bin/$(buildConfiguration)/*.nupkg'
+    nuGetFeedType: 'external'
+    publishFeedCredentials: 'nuget-curiosity-org'

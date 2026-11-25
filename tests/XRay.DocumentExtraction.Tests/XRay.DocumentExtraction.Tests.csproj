@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <OutputType>Exe</OutputType>
+    <NoWarn>$(NoWarn);CA1707</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="xunit.v3" Version="4.0.1" />
+    <!-- Middleware (the builder) lives in the main package; the provider needs only the abstractions. -->
+    <PackageReference Include="Microsoft.Extensions.DocumentExtraction" Version="11.0.1-preview.1.26570.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../src/XRay.DocumentExtraction/XRay.DocumentExtraction.csproj" />
+  </ItemGroup>
+</Project>
