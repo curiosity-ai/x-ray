@@ -173,7 +173,8 @@ The one package here with code: `XRayDocumentExtractionClient`, a `DocumentExtra
 document structure tree onto `ExtractionDocument` (`ExtractionDocumentBuilder`). It is a
 **PackageReference** to X-Ray.Content, like the umbrella's members. The abstraction is
 experimental (`EXTEXP0019`, `MEDE0001` suppressed in the csproj) and prerelease, so the package
-is published with a `-preview` suffix by `.devops/build-x-ray-documentextraction-nuget.yml`, and is
+is published with a `-preview` suffix by the umbrella's pipeline (`.devops/build-x-ray-nuget.yml`, one
+run, one version, built against the resolved `XRayContentVersion`), and is
 **not** in `Members.props` (the resolver takes stable versions only). Take API names from the
 abstraction's packages, not the blog post: a table cell's constructor takes spans, its position
 comes from the `Cells[row, column]` indexer.
