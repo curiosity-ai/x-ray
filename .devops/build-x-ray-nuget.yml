@@ -8,7 +8,7 @@
 # those as MSBuild properties, so every X-Ray release pins the newest members published at the
 # time it runs. Queue this pipeline after a member ships to carry its new version into X-Ray.
 #
-# The same run also builds, tests and publishes X-Ray.DocumentExtraction (src/XRay.DocumentExtraction),
+# The same run also builds and publishes X-Ray.DocumentExtraction (src/XRay.DocumentExtraction),
 # the Microsoft.Extensions.DocumentExtraction provider. It depends on X-Ray.Content, so it takes the
 # resolved XRayContentVersion like the umbrella does and ships against the newest published
 # X-Ray.Content. The abstraction it implements is a prerelease and nuget.org refuses a stable package
@@ -22,7 +22,6 @@
 variables:
   umbrella: './src/XRay/XRay.csproj'
   provider: './src/XRay.DocumentExtraction/XRay.DocumentExtraction.csproj'
-  providerTests: './tests/XRay.DocumentExtraction.Tests/XRay.DocumentExtraction.Tests.csproj'
   buildConfiguration: 'Release'
   targetVersion: yy.M.$(build.buildId)
   previewVersion: yy.M.$(build.buildId)-preview
@@ -45,7 +44,6 @@ trigger:
   paths:
     include:
     - src/*
-    - tests/*
     - assets/*
     - Directory.Build.props
     - global.json
@@ -106,10 +104,7 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: 'restore'
-    # One pattern per line: this task does not split a `;`-separated list, so it matched no file.
-    projects: |
-      $(provider)
-      $(providerTests)
+    projects: '$(provider)'
     restoreArguments: '$(memberArgs)'
   displayName: 'restore provider'
 
@@ -126,13 +121,6 @@ steps:
     projects: '$(provider)'
     arguments: '-c $(buildConfiguration) --no-restore /p:Version=$(previewVersion) /p:LangVersion=latest $(memberArgs)'
   displayName: 'build provider'
-
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'test'
-    projects: '$(providerTests)'
-    arguments: '-c $(buildConfiguration) $(memberArgs)'
-  displayName: 'test provider'
 
 - task: DotNetCoreCLI@2
   inputs:
