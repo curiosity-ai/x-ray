@@ -106,7 +106,10 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: 'restore'
-    projects: '$(provider);$(providerTests)'
+    # One pattern per line: this task does not split a `;`-separated list, so it matched no file.
+    projects: |
+      $(provider)
+      $(providerTests)
     restoreArguments: '$(memberArgs)'
   displayName: 'restore provider'
 
